@@ -197,7 +197,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  height: 80%;
+  height: 100%;
   background: linear-gradient(160deg, var(--sage-light), var(--sage));
   border-radius: 0 0 10px 10px;
   box-shadow: var(--paper-shadow);
@@ -238,7 +238,7 @@ body {
   align-items: center;
   justify-content: center;
   transform-origin: center bottom;
-  transform: translateY(64%) scaleY(0.22) scaleX(0.92);
+  transform: translateY(64%) rotateX(-85deg) scaleX(0.92);
   transition: transform 0.8s cubic-bezier(.65,0,.35,1), opacity 1.8s ease-in-out;
   overflow: hidden;
   opacity: 1;
@@ -257,8 +257,8 @@ body {
   transition: opacity 0.4s ease;
 }
 
-.envelope-card.stage1 { transform: translateY(-18%) scaleY(0.22) scaleX(0.92); }
-.envelope-card.stage2 { transform: translateY(-18%) scaleY(1) scaleX(1); }
+.envelope-card.stage1 { transform: translateY(-18%) rotateX(-80deg) scaleX(0.92); }
+.envelope-card.stage2 { transform: translateY(-18%) rotateX(0deg) scaleX(1); }
 .envelope-card.stage2::before { opacity: 0; }
 .envelope-card.stage3 { transform: translateY(-50%) scale(3.5); opacity: 0; }
 
@@ -295,7 +295,7 @@ body {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(min(84vw, 360px) * 0.30);
+  top: calc(min(84vw, 360px) * 0.40);
   transform: translateY(-50%);
   z-index: 5;
   display: flex;
@@ -304,23 +304,13 @@ body {
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.ribbon-h {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 22px;
-  transform: translateY(-50%);
-  background: linear-gradient(180deg, var(--blush-deep), var(--blush));
-  box-shadow: 0 2px 6px rgba(43,51,40,0.15);
-}
 
 .wax-seal {
   position: relative;
-  width: 52px;
-  height: 52px;
+  width: 82px;
+  height: 82px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold) 60%, #96702f 100%);
+  background: radial-gradient(circle at 35% 30%, var(--gold), var(--gold) 60%, #96702f 100%);
   box-shadow: 0 4px 10px rgba(43,51,40,0.3), inset 0 -2px 4px rgba(0,0,0,0.2);
   display: flex;
   align-items: center;
