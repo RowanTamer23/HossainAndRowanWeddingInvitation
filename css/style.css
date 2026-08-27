@@ -233,6 +233,7 @@ body {
 .envelope-card {
   position: absolute;
   inset: 0;
+  height: 220%; /* Base height is the fully unfolded height */
   background: var(--ivory);
   border-radius: 4px;
   box-shadow: 0 8px 24px rgba(43,51,40,0.25);
@@ -242,8 +243,8 @@ body {
   align-items: center;
   justify-content: flex-start;
   transform-origin: center bottom;
-  transform: translateY(64%) rotateX(-85deg) scaleX(0.92);
-  transition: transform 0.8s cubic-bezier(.65,0,.35,1), opacity 0.8s ease-in-out, left 0.8s, top 0.8s, width 0.8s, height 0.8s;
+  transform: translateY(64%) scaleY(0.22) scaleX(0.92);
+  transition: transform 0.8s cubic-bezier(.65,0,.35,1), opacity 0.8s ease-in-out;
   overflow: hidden;
   opacity: 1;
 }
@@ -261,20 +262,12 @@ body {
   transition: opacity 0.4s ease;
 }
 
-.envelope-card.stage1 { transform: translateY(-78%) rotateX(-80deg) scaleX(0.92); height: 100%; }
-.envelope-card.stage2 { transform: translateY(-78%) rotateX(0deg) scaleX(1); height: 220%; }
+.envelope-card.stage1 { transform: translateY(-78%) scaleY(0.22) scaleX(0.92); }
+.envelope-card.stage2 { transform: translateY(-78%) scaleY(1) scaleX(1); }
 .envelope-card.stage2::before { opacity: 0; }
 .envelope-card.stage3 {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 100vw;
-  height: 100vh;
-  transform: translate(-50%, -50%);
-  border-radius: 0;
-  box-shadow: none;
-  border: none;
-  overflow-y: hidden;
+  transform: translateY(-35%) scale(5);
+  opacity: 1;
   z-index: 10000;
 }
 
