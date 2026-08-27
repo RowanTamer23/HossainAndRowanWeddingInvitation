@@ -399,9 +399,28 @@ body.invitation-open main {
   opacity: 0.65;
 }
 
-.floral-side.l1 { left: 8px; top: 28%; }
-.floral-side.r1 { right: 8px; top: 52%; transform: scaleX(-1); }
-.floral-side.l2 { left: 8px; top: 76%; }
+.floral-side.l1 { left: 8px; top: 18%; }
+.floral-side.r1 { right: 8px; top: 27%; transform: scaleX(-1); }
+.floral-side.l2 { left: 8px; top: 36%; }
+.floral-side.r2 { right: 8px; top: 45%; transform: scaleX(-1); }
+.floral-side.l3 { left: 8px; top: 54%; }
+.floral-side.r3 { right: 8px; top: 63%; transform: scaleX(-1); }
+.floral-side.l4 { left: 8px; top: 72%; }
+.floral-side.r4 { right: 8px; top: 81%; transform: scaleX(-1); }
+
+.floral-edge {
+  position: absolute;
+  width: clamp(140px, 35vw, 240px);
+  height: clamp(28px, 7vw, 48px);
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.9;
+}
+
+.floral-edge.tc { top: 12px; }
+.floral-edge.bc { bottom: 12px; }
 
 main section {
   padding: 9vh 0;
