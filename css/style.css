@@ -370,7 +370,7 @@ main {
   padding: 6vh 6vw 4vh;
 }
 
-section {
+main section {
   padding: 9vh 0;
   text-align: center;
   position: relative;
@@ -379,7 +379,7 @@ section {
   transition: opacity 0.9s ease, transform 0.9s ease;
 }
 
-section.revealed {
+main section.revealed {
   opacity: 1;
   transform: none;
 }
