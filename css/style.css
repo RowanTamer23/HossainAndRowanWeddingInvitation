@@ -162,6 +162,7 @@ body {
 
 .envelope-wrap {
   position: relative;
+  top: 0; /* Explicit base value for float animation */
   width: 360px;
   max-width: 84vw;
   height: 256.5px; /* Fallback for older layout engines */
