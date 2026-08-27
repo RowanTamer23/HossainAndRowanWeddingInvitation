@@ -240,10 +240,11 @@ body {
   transition: transform 0.8s cubic-bezier(.65,0,.35,1), opacity 0.8s ease-in-out;
   overflow: visible;
   opacity: 1;
+  transform-style: preserve-3d; /* Preserves nested 3D fold angles of child panels */
 }
 
-.envelope-card.stage1 { transform: translateY(-78%) rotateX(-20deg) scaleX(0.92); }
-.envelope-card.stage2 { transform: translateY(-78%) rotateX(0deg) scaleX(1); }
+.envelope-card.stage1 { transform: translateY(-18%) rotateX(-20deg) scaleX(0.92); }
+.envelope-card.stage2 { transform: translateY(-75%) rotateX(0deg) scaleX(1); }
 .envelope-card.stage3 {
   transform: translateY(-28%) scale(5);
   opacity: 1;
