@@ -283,9 +283,14 @@ body {
   transform: translate(-50%, -50%) translateY(-78%) scaleX(0.5) scaleY(0.5);
 }
 
+/* stage1-mid: glide to the center of the screen, still folded in 4 */
+.envelope-card.stage1-mid {
+  transform: translate(-50%, -50%) translateY(-50%) scaleX(0.5) scaleY(0.5);
+}
+
 /* stage2: unfold horizontally from middle (scaleX: 1) */
 .envelope-card.stage2 {
-  transform: translate(-50%, -50%) translateY(-78%) scaleX(1.0) scaleY(0.5);
+  transform: translate(-50%, -50%) translateY(-50%) scaleX(1.0) scaleY(0.5);
 }
 .envelope-card.stage2::before {
   opacity: 0; /* vertical fold fades out */
@@ -293,7 +298,7 @@ body {
 
 /* stage2-vert: unfold vertically from middle (scaleY: 1) */
 .envelope-card.stage2-vert {
-  transform: translate(-50%, -50%) translateY(-78%) scaleX(1.0) scaleY(1.0);
+  transform: translate(-50%, -50%) translateY(-50%) scaleX(1.0) scaleY(1.0);
 }
 .envelope-card.stage2-vert::after {
   opacity: 0; /* horizontal fold fades out */
