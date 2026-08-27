@@ -242,7 +242,7 @@ body {
   justify-content: center;
   transform-origin: center bottom;
   transform: translateY(64%) rotateX(-85deg) scaleX(0.92);
-  transition: transform 0.8s cubic-bezier(.65,0,.35,1), opacity 1.8s ease-in-out;
+  transition: transform 0.8s cubic-bezier(.65,0,.35,1), opacity 0.8s ease-in-out;
   overflow: hidden;
   opacity: 1;
 }
@@ -263,7 +263,7 @@ body {
 .envelope-card.stage1 { transform: translateY(-18%) rotateX(-80deg) scaleX(0.92); }
 .envelope-card.stage2 { transform: translateY(-18%) rotateX(0deg) scaleX(1); }
 .envelope-card.stage2::before { opacity: 0; }
-.envelope-card.stage3 { transform: translateY(-50%) scale(3.5); opacity: 0; }
+.envelope-card.stage3 { transform: translateY(-35%) scale(5); opacity: 1; }
 
 .fold-face {
   text-align: center;
