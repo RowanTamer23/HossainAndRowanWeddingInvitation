@@ -119,6 +119,7 @@
     setTimeout(function () { card.classList.add('stage3'); }, 1750);  // rises & settles
     setTimeout(function () {
       scene.classList.add('closed');                          // the invitation itself appears
+      document.body.classList.add('invitation-open');         // trigger main zoom-in animation
       revealOnScroll();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 2450);
