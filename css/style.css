@@ -233,127 +233,120 @@ body {
 .envelope-card {
   position: absolute;
   inset: 0;
-  height: 220%; /* Base height is the fully unfolded height */
-  background: var(--ivory);
-  border-radius: 4px;
-  box-shadow: 0 8px 24px rgba(43,51,40,0.25);
-  border: 1.5px solid var(--gold-light); /* Soft gold foil border */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  transform-origin: center bottom;
-  transform: translateY(64%) scaleY(0.22) scaleX(0.92);
+  height: 330%; /* Base height is the fully unfolded height (720px) */
+  background: transparent;
+  transform-origin: center top;
+  transform: translateY(64%) rotateX(-20deg) scaleX(0.92);
   transition: transform 0.8s cubic-bezier(.65,0,.35,1), opacity 0.8s ease-in-out;
-  overflow: hidden;
+  overflow: visible;
   opacity: 1;
 }
 
-.envelope-card::before {
-  /* fold crease */
-  content: "";
-  position: absolute;
-  left: 6%;
-  right: 6%;
-  top: 50%;
-  height: 1px;
-  background: rgba(43,51,40,0.18);
-  transform: translateY(-50%);
-  transition: opacity 0.4s ease;
-}
-
-.envelope-card.stage1 { transform: translateY(-78%) scaleY(0.22) scaleX(0.92); }
-.envelope-card.stage2 { transform: translateY(-78%) scaleY(1) scaleX(1); }
-.envelope-card.stage2::before { opacity: 0; }
+.envelope-card.stage1 { transform: translateY(-78%) rotateX(-20deg) scaleX(0.92); }
+.envelope-card.stage2 { transform: translateY(-78%) rotateX(0deg) scaleX(1); }
 .envelope-card.stage3 {
-  transform: translateY(-35%) scale(5);
+  transform: translateY(-28%) scale(5);
   opacity: 1;
   z-index: 10000;
 }
 
+/* Accordion panels when inside the envelope-card */
+.envelope-card .accordion-panel {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Sized to match Panel 1 */
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(.65,0,.35,1);
+  background: var(--ivory);
+  box-sizing: border-box;
+}
+
+.envelope-card .panel-1 {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 25%; /* Exactly 1/4 of total card height */
+  border: 1.5px solid var(--gold-light);
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(43,51,40,0.25);
+  background: var(--ivory);
+  z-index: 4;
+}
+
+.envelope-card .panel-2 {
+  top: 100%;
+  transform-origin: top center;
+  transform: rotateX(-179.5deg); /* Folded back behind Panel 1 */
+  border-top: 1px dashed rgba(43,51,40,0.25);
+  z-index: 3;
+}
+
+.envelope-card .panel-3 {
+  top: 100%;
+  transform-origin: top center;
+  transform: rotateX(179.5deg); /* Folded forward over Panel 2 */
+  border-top: 1px dashed rgba(43,51,40,0.25);
+  z-index: 2;
+}
+
+.envelope-card .panel-4 {
+  top: 100%;
+  transform-origin: top center;
+  transform: rotateX(-179.5deg); /* Folded back behind Panel 3 */
+  border-top: 1px dashed rgba(43,51,40,0.25);
+  border-bottom: 1.5px solid var(--gold-light);
+  border-radius: 0 0 4px 4px;
+  z-index: 1;
+}
+
+/* Unfold transition */
+.envelope-card.stage2 .panel-2,
+.envelope-card.stage2 .panel-3,
+.envelope-card.stage2 .panel-4 {
+  transform: rotateX(0deg);
+}
+
+/* Once removed from envelope card state, reset panels to default document flow */
+main:not(.envelope-card) .accordion-panel {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  width: 100% !important;
+  height: auto !important;
+  transform: none !important;
+  transform-style: flat !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
 .fold-face {
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 25%; /* Covers Panel 1 only when closed */
+  background: var(--ivory);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   z-index: 10;
-  pointer-events: none;
-  perspective: 1400px;
-  transform-style: preserve-3d;
-  transition: opacity 0.9s cubic-bezier(.65,0,.35,1);
+  transition: opacity 0.6s ease;
+  border-radius: 4px;
+  border: 1.5px solid var(--gold-light);
+  box-sizing: border-box;
+  box-shadow: 0 8px 24px rgba(43,51,40,0.25);
 }
 
 .fold-face.fade {
   opacity: 0;
   pointer-events: none;
-}
-
-.fold-face::after {
-  content: "";
-  position: absolute;
-  left: 6%;
-  right: 6%;
-  top: 50%;
-  height: 1px;
-  background: rgba(43,51,40,0.18);
-  transform: translateY(-50%);
-  z-index: 12;
-  transition: opacity 0.4s ease;
-}
-
-.envelope-card.stage2 .fold-face::after {
-  opacity: 0;
-}
-
-.fold-flap {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 50%;
-  background: var(--ivory);
-  border: 1.5px solid var(--gold-light);
-  box-sizing: border-box;
-  transition: transform 0.9s cubic-bezier(.65,0,.35,1), opacity 0.9s ease;
-  backface-visibility: hidden;
-  z-index: 11;
-}
-
-.fold-flap.top {
-  top: 0;
-  transform-origin: top center;
-  border-bottom: none;
-  border-radius: 4px 4px 0 0;
-}
-
-.fold-flap.bottom {
-  bottom: 0;
-  transform-origin: bottom center;
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-}
-
-.fold-flap.top .fold-content {
-  position: absolute;
-  bottom: clamp(16px, 5vw, 36px);
-  left: 0;
-  right: 0;
-  text-align: center;
-}
-
-.fold-flap.bottom .fold-content {
-  position: absolute;
-  top: clamp(16px, 5vw, 36px);
-  left: 0;
-  right: 0;
-  text-align: center;
-}
-
-.envelope-card.stage2 .fold-flap.top {
-  transform: rotateX(165deg);
-  opacity: 0.15;
-}
-
-.envelope-card.stage2 .fold-flap.bottom {
-  transform: rotateX(-165deg);
-  opacity: 0.15;
 }
 
 .fold-face .monogram {
