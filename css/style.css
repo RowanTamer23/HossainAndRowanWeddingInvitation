@@ -375,6 +375,34 @@ body.invitation-open main {
   opacity: 1;
 }
 
+/* ============ BOTANICAL DECORATIONS ============ */
+.floral-corner {
+  position: absolute;
+  width: clamp(60px, 16vw, 130px);
+  height: clamp(60px, 16vw, 130px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.85;
+}
+
+.floral-corner.tl { top: 12px; left: 12px; }
+.floral-corner.tr { top: 12px; right: 12px; }
+.floral-corner.bl { bottom: 12px; left: 12px; }
+.floral-corner.br { bottom: 12px; right: 12px; }
+
+.floral-side {
+  position: absolute;
+  width: clamp(40px, 10vw, 85px);
+  height: clamp(60px, 15vw, 125px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.65;
+}
+
+.floral-side.l1 { left: 8px; top: 28%; }
+.floral-side.r1 { right: 8px; top: 52%; transform: scaleX(-1); }
+.floral-side.l2 { left: 8px; top: 76%; }
+
 main section {
   padding: 9vh 0;
   text-align: center;
