@@ -99,7 +99,7 @@
   ====================================================== */
   var wrap = document.getElementById('envelopeWrap');
   var envelope = document.getElementById('envelope');
-  var card = document.getElementById('envelopeCard');
+  var card = document.getElementById('invitation');
   var foldFace = document.getElementById('foldFace');
   var scene = document.getElementById('envelope-scene');
   var opened = false;
@@ -118,6 +118,10 @@
     }, 1050);
     setTimeout(function () { card.classList.add('stage3'); }, 1750);  // rises & settles
     setTimeout(function () {
+      // Append the card directly to the body and remove envelope constraints
+      document.body.appendChild(card);
+      card.classList.remove('envelope-card', 'stage1', 'stage2', 'stage3');
+      
       scene.classList.add('closed');                          // the invitation itself appears
       document.body.classList.add('invitation-open');         // trigger main zoom-in animation
       revealOnScroll();

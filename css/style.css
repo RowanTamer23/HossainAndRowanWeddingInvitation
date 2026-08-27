@@ -238,11 +238,12 @@ body {
   box-shadow: 0 8px 24px rgba(43,51,40,0.25);
   border: 1.5px solid var(--gold-light); /* Soft gold foil border */
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   transform-origin: center bottom;
   transform: translateY(64%) rotateX(-85deg) scaleX(0.92);
-  transition: transform 0.8s cubic-bezier(.65,0,.35,1), opacity 0.8s ease-in-out;
+  transition: transform 0.8s cubic-bezier(.65,0,.35,1), opacity 0.8s ease-in-out, left 0.8s, top 0.8s, width 0.8s, height 0.8s;
   overflow: hidden;
   opacity: 1;
 }
@@ -263,7 +264,28 @@ body {
 .envelope-card.stage1 { transform: translateY(-78%) rotateX(-80deg) scaleX(0.92); }
 .envelope-card.stage2 { transform: translateY(-78%) rotateX(0deg) scaleX(1); }
 .envelope-card.stage2::before { opacity: 0; }
-.envelope-card.stage3 { transform: translateY(-35%) scale(5); opacity: 1; }
+.envelope-card.stage3 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100vw;
+  height: 100vh;
+  transform: translate(-50%, -50%);
+  border-radius: 0;
+  box-shadow: none;
+  border: none;
+  overflow-y: hidden;
+  z-index: 10000;
+}
+
+/* Hide invitation content when inside the envelope card state to optimize animation performance */
+.envelope-card section,
+.envelope-card footer,
+.envelope-card .floral-corner,
+.envelope-card .floral-side,
+.envelope-card .floral-edge {
+  display: none !important;
+}
 
 .fold-face {
   text-align: center;
@@ -367,12 +389,6 @@ main {
   border-radius: 8px;
   box-shadow: var(--paper-shadow);
   border: 1.5px solid var(--gold-light);
-  opacity: 0;
-  transition: opacity 0.8s ease-in-out;
-}
-
-body.invitation-open main {
-  opacity: 1;
 }
 
 /* ============ BOTANICAL DECORATIONS ============ */
