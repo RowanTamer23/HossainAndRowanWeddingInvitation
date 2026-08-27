@@ -260,8 +260,8 @@ body {
   transition: opacity 0.4s ease;
 }
 
-.envelope-card.stage1 { transform: translateY(-18%) rotateX(-80deg) scaleX(0.92); }
-.envelope-card.stage2 { transform: translateY(-18%) rotateX(0deg) scaleX(1); }
+.envelope-card.stage1 { transform: translateY(-78%) rotateX(-80deg) scaleX(0.92); }
+.envelope-card.stage2 { transform: translateY(-78%) rotateX(0deg) scaleX(1); }
 .envelope-card.stage2::before { opacity: 0; }
 .envelope-card.stage3 { transform: translateY(-35%) scale(5); opacity: 1; }
 
