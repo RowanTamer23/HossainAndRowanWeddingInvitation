@@ -232,106 +232,83 @@ body {
 
 .envelope-card {
   position: absolute;
-  inset: 0;
-  height: 330%; /* Base height is the fully unfolded height (720px) */
-  background: transparent;
-  transform-origin: center top;
-  transform: translateY(64%) rotateX(-20deg) scaleX(0.92);
+  left: 50%;
+  top: 50%;
+  width: min(84vw, 360px);
+  height: calc(min(84vw, 360px) * 1.0); /* Square aspect-ratio (360x360) */
+  background: var(--ivory);
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(43,51,40,0.25);
+  border: 1.5px solid var(--gold-light); /* Soft gold foil border */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transform-origin: center center;
+  transform: translate(-50%, -50%) translateY(64%) scaleX(0.5) scaleY(0.5);
   transition: transform 0.8s cubic-bezier(.65,0,.35,1), opacity 0.8s ease-in-out;
-  overflow: visible;
+  overflow: hidden;
   opacity: 1;
-  transform-style: preserve-3d; /* Preserves nested 3D fold angles of child panels */
 }
 
-.envelope-card.stage1 { transform: translateY(-18%) rotateX(-20deg) scaleX(0.92); }
-.envelope-card.stage2 { transform: translateY(-75%) rotateX(0deg) scaleX(1); }
+/* Crease lines to simulate being folded in 4 */
+.envelope-card::before {
+  /* vertical fold line */
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: rgba(43,51,40,0.18);
+  z-index: 12;
+  transition: opacity 0.4s ease;
+}
+
+.envelope-card::after {
+  /* horizontal fold line */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(43,51,40,0.18);
+  z-index: 12;
+  transition: opacity 0.4s ease;
+}
+
+/* stage1: out of the envelope, still folded in 4 */
+.envelope-card.stage1 {
+  transform: translate(-50%, -50%) translateY(-78%) scaleX(0.5) scaleY(0.5);
+}
+
+/* stage2: unfold horizontally from middle (scaleX: 1) */
+.envelope-card.stage2 {
+  transform: translate(-50%, -50%) translateY(-78%) scaleX(1.0) scaleY(0.5);
+}
+.envelope-card.stage2::before {
+  opacity: 0; /* vertical fold fades out */
+}
+
+/* stage2-vert: unfold vertically from middle (scaleY: 1) */
+.envelope-card.stage2-vert {
+  transform: translate(-50%, -50%) translateY(-78%) scaleX(1.0) scaleY(1.0);
+}
+.envelope-card.stage2-vert::after {
+  opacity: 0; /* horizontal fold fades out */
+}
+
+/* stage3: zoom to screen */
 .envelope-card.stage3 {
-  transform: translateY(-28%) scale(5);
+  transform: translate(-50%, -50%) translateY(-28%) scale(5.0);
   opacity: 1;
   z-index: 10000;
 }
 
-/* Accordion panels when inside the envelope-card */
-.envelope-card .accordion-panel {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 100%; /* Sized to match Panel 1 */
-  transform-style: preserve-3d;
-  transition: transform 1.2s cubic-bezier(.65,0,.35,1);
-  background: var(--ivory);
-  box-sizing: border-box;
-}
-
-.envelope-card .panel-1 {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 25%; /* Exactly 1/4 of total card height */
-  border: 1.5px solid var(--gold-light);
-  border-radius: 4px;
-  box-shadow: 0 8px 24px rgba(43,51,40,0.25);
-  background: var(--ivory);
-  z-index: 4;
-}
-
-.envelope-card .panel-2 {
-  top: 100%;
-  transform-origin: top center;
-  transform: rotateX(-179.5deg); /* Folded back behind Panel 1 */
-  border-top: 1px dashed rgba(43,51,40,0.25);
-  z-index: 3;
-}
-
-.envelope-card .panel-3 {
-  top: 100%;
-  transform-origin: top center;
-  transform: rotateX(179.5deg); /* Folded forward over Panel 2 */
-  border-top: 1px dashed rgba(43,51,40,0.25);
-  z-index: 2;
-}
-
-.envelope-card .panel-4 {
-  top: 100%;
-  transform-origin: top center;
-  transform: rotateX(-179.5deg); /* Folded back behind Panel 3 */
-  border-top: 1px dashed rgba(43,51,40,0.25);
-  border-bottom: 1.5px solid var(--gold-light);
-  border-radius: 0 0 4px 4px;
-  z-index: 1;
-}
-
-/* Unfold transition */
-.envelope-card.stage2 .panel-2,
-.envelope-card.stage2 .panel-3,
-.envelope-card.stage2 .panel-4 {
-  transform: rotateX(0deg);
-}
-
-/* Once removed from envelope card state, reset panels to default document flow */
-main:not(.envelope-card) .accordion-panel {
-  position: relative !important;
-  top: auto !important;
-  left: auto !important;
-  right: auto !important;
-  bottom: auto !important;
-  width: 100% !important;
-  height: auto !important;
-  transform: none !important;
-  transform-style: flat !important;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-}
-
 .fold-face {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 25%; /* Covers Panel 1 only when closed */
+  inset: 0;
   background: var(--ivory);
   display: flex;
   flex-direction: column;
@@ -340,9 +317,6 @@ main:not(.envelope-card) .accordion-panel {
   z-index: 10;
   transition: opacity 0.6s ease;
   border-radius: 4px;
-  border: 1.5px solid var(--gold-light);
-  box-sizing: border-box;
-  box-shadow: 0 8px 24px rgba(43,51,40,0.25);
 }
 
 .fold-face.fade {

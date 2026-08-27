@@ -111,22 +111,23 @@
 
     wrap.classList.add('open');
     envelope.classList.add('open');                          // t=0: ribbon/seal release, flap opens
-    setTimeout(function () { card.classList.add('stage1'); }, 350);   // slides out, still folded
+    setTimeout(function () { card.classList.add('stage1'); }, 350);   // slides out, folded in 4
+    setTimeout(function () { card.classList.add('stage2'); }, 1050);  // unfolds horizontally
     setTimeout(function () {
-      card.classList.add('stage2');                           // unfolds open
+      card.classList.add('stage2-vert');                       // unfolds vertically
       foldFace.classList.add('fade');
-    }, 1050);
-    setTimeout(function () { card.classList.add('stage3'); }, 1750);  // rises & settles
+    }, 1750);
+    setTimeout(function () { card.classList.add('stage3'); }, 2450);  // zooms to screen
     setTimeout(function () {
       // Append the card directly to the body and remove envelope constraints
       document.body.appendChild(card);
-      card.classList.remove('envelope-card', 'stage1', 'stage2', 'stage3');
+      card.classList.remove('envelope-card', 'stage1', 'stage2', 'stage2-vert', 'stage3');
       
       scene.classList.add('closed');                          // the invitation itself appears
       document.body.classList.add('invitation-open');         // trigger main zoom-in animation
       revealOnScroll();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 2450);
+    }, 3150);
   }
   wrap.addEventListener('click', openEnvelope);
   wrap.addEventListener('keydown', function (e) {
