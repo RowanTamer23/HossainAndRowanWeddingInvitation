@@ -6,7 +6,7 @@
   ====================================================== */
   var WEDDING_DATE_ISO = "2026-10-12T19:00:00"; // interpreted as 12 October 2026, 7:00 PM
   var VENUE_QUERY = "Sea Garden Open Air Hall";  // used to build the Google Maps link/embed (English name works best for geocoding)
-  var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz3m-V-sg2X9dtPYeYoO2SGiHKuwmks2Ljb0wFYzzrugmNYOuf1jIqNTrY-_Yp-t1jHpA/exec"; // see SETUP-RSVP-DATABASE.md
+  var APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-PkR5mOYlPFNnlOv440_7aCfmxbUkCp-YD3TfHm9fbtpffGWF_iCQ6Bp8FWfElIAG/exec"; // see SETUP-RSVP-DATABASE.md
 
   /* ======================================================
      TRANSLATIONS
