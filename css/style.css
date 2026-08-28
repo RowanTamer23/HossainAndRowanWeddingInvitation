@@ -220,20 +220,21 @@ body {
 /* ── card-stage: clips card at envelope bottom, allows overflow above ─────── */
 .card-stage {
   position: absolute;
-  /* extend left/right so the card isn't clipped when wider than the envelope */
-  left: -5%; right: -5%;
+  left: 9%; right: 9%;       /* matches envelope proportions */
   top: -8%; bottom: 8%;
-  z-index: 2;              /* behind flap while sealed */
+  z-index: 2;                /* below pocket (z:3) → pocket covers card bottom */
   overflow: hidden;
-  /* clip only bottom (inside pocket), allow full top + sides */
-  clip-path: inset(5% 5% 0% 5% round 0 0 10px 10px);
+  clip-path: inset(0 0 0 0 round 0 0 10px 10px);
 }
-/* Once the card starts coming out, expand clip upward and raise above the flap */
+/* Once sliding out: let card escape upward and sideways; z-index stays at 2
+   so the pocket body (z:3) still covers the card's lower portion naturally,
+   while the open flap (z:1) is behind the card.                              */
 .card-stage.card-out {
-  clip-path: inset(-600% -100% 0% -100%);
+  clip-path: inset(-600% -60% 0% -60%);  /* open top + sides, keep bottom clip */
   overflow: visible;
-  z-index: 10 !important;  /* card stage in front of everything including flap */
+  /* NO z-index change here — pocket body remains in front of card bottom */
 }
+
 
 /* ── Invitation paper ─────────────────────────────────────────────────────── */
 .envelope-card {
