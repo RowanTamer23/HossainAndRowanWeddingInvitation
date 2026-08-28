@@ -554,16 +554,19 @@ body.invitation-open main section#hero {
   width: 100%;
   height: 62%;
   transform-origin: top center;
-  transition: transform 0.7s cubic-bezier(.4, 0, .2, 1);
-  z-index: 8;
+  transition: transform 0.7s cubic-bezier(.4, 0, .2, 1),
+              z-index 0s 0s;
+  z-index: 8; /* in front while sealed */
   filter: drop-shadow(0 6px 10px rgba(43,51,40,0.15));
   transform: rotateX(0deg);
 }
 
-/* As soon as envelope opens: flap drops behind envelope-back and card */
+/* While opening: flap lifts up from the FRONT (z:8), then drops behind (z:0) at 0.35s when past 90deg */
 .envelope.open .envelope-flap {
   transform: rotateX(180deg);
   z-index: 0;
+  transition: transform 0.7s cubic-bezier(.4, 0, .2, 1),
+              z-index 0s 0.35s; /* delay z-index drop until flap is past 90deg */
 }
 
 /* Bilingual Tap Hint */

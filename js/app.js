@@ -112,13 +112,13 @@
     wrap.classList.add('open');
     envelope.classList.add('open');   // flap flips open, seal drops behind and fades
 
-    // ── Step 1: Card emerges smoothly to center screen (350ms) ───────────
+    // ── Step 1: Card emerges after flap has fully opened from the front (750ms) ──
     setTimeout(function () {
       card.parentElement.classList.add('card-out');
       card.classList.add('emerge');
-    }, 350);
+    }, 750);
 
-    // ── Step 2: Smooth FLIP Fullscreen Expansion (1250ms) ────────────────
+    // ── Step 2: Smooth FLIP Fullscreen Expansion (1650ms) ────────────────
     // Card has fully settled at center. We measure its static position and animate to full viewport.
     setTimeout(function () {
       var rect = card.getBoundingClientRect();
@@ -153,9 +153,9 @@
           }, 350);
         });
       });
-    }, 1250);
+    }, 1650);
 
-    // ── Step 3: Complete transition & enable normal scrolling (2100ms) ───
+    // ── Step 3: Complete transition & enable normal scrolling (2450ms) ───
     setTimeout(function () {
       card.style.cssText = '';
       card.classList.remove('envelope-card', 'emerge', 'zooming', 'fade-to-content');
@@ -172,7 +172,7 @@
 
       revealOnScroll();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 2100);
+    }, 2450);
   }
   wrap.addEventListener('click', openEnvelope);
   wrap.addEventListener('keydown', function (e) {
