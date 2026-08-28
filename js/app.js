@@ -97,62 +97,82 @@
      folded card slides out, then visibly unfolds, then the
      invitation itself is revealed.
   ====================================================== */
-  var wrap = document.getElementById('envelopeWrap');
+  var wrap     = document.getElementById('envelopeWrap');
   var envelope = document.getElementById('envelope');
-  var card = document.getElementById('invitation');
-  var foldFace = document.getElementById('foldFace');
-  var scene = document.getElementById('envelope-scene');
-  var opened = false;
+  var card     = document.getElementById('invitation');
+  var scene    = document.getElementById('envelope-scene');
+  var opened   = false;
+
 
   function openEnvelope() {
     if (opened) return;
     opened = true;
-    document.body.style.overflow = 'auto';
 
     wrap.classList.add('open');
-    envelope.classList.add('open');                              // t=0: ribbon/seal, flap opens
+    envelope.classList.add('open');     // t=0: flap lifts, seal releases
 
-    // t=350ms: slides up out of envelope pocket, still folded flat
-    setTimeout(function () { card.classList.add('stage1'); }, 350);
-
-    // t=1050ms: glides to viewport centre (card-stage z hoisted)
+    // t=350ms: let card-stage clip expand upward so card can exit
     setTimeout(function () {
-      card.classList.add('stage1-mid');
-      card.parentElement.style.zIndex = '6';
-    }, 1050);
+      card.parentElement.classList.add('card-out');
+      card.classList.add('stage1');     // slides up above envelope
+    }, 350);
 
-    // t=1850ms: right flap folds away (vertical crease opens)
-    setTimeout(function () { card.classList.add('stage2'); }, 1850);
-
-    // t=2550ms: bottom flap folds away (horizontal crease opens), monogram fades
-    setTimeout(function () { card.classList.add('stage2-vert'); }, 2550);
-
-    // t=3250ms: zoom — switch to position:fixed FIRST so clip-path can't clip it
+    // t=1000ms: glide to viewport centre
     setTimeout(function () {
-      card.style.position = 'fixed';
-      card.style.left     = '50%';
-      card.style.top      = '50%';
-      card.style.zIndex   = '20000';
-      // tiny delay so the browser registers the fixed position before the transform kicks in
+      card.parentElement.style.zIndex = '8';
+      card.classList.add('stage2');
+    }, 1000);
+
+    // t=1750ms: FLIP zoom — card grows to fill the entire screen
+    setTimeout(function () {
+      // ── FLIP: First ──────────────────────────────────────────────────────
+      // Measure exactly where the card sits right now (as an absolutely-
+      // positioned child of .card-stage, centred in the viewport).
+      var rect = card.getBoundingClientRect();
+
+      // ── FLIP: Invert ─────────────────────────────────────────────────────
+      // Switch to fixed at the card's CURRENT pixel position — no visual jump.
+      card.style.cssText = [
+        'position:fixed',
+        'left:'   + rect.left   + 'px',
+        'top:'    + rect.top    + 'px',
+        'width:'  + rect.width  + 'px',
+        'height:' + rect.height + 'px',
+        'transform:none',
+        'transition:none',
+        'z-index:20000',
+        'border-radius:6px',
+        'overflow:hidden',
+        'margin:0'
+      ].join(';');
+
+      // ── FLIP: Play ───────────────────────────────────────────────────────
+      // Next paint: add .zooming which applies the size/position transitions,
+      // then immediately set the "last" state (full screen).
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
-          card.classList.add('stage3');
+          card.classList.add('zooming');
+          card.style.left   = '0';
+          card.style.top    = '0';
+          card.style.width  = '100vw';
+          card.style.height = '100vh';
+          card.style.borderRadius = '0';
         });
       });
-    }, 3250);
+    }, 1750);
 
-    // t=4000ms: migrate card to body, restore normal page
+    // t=2600ms: zoom transition is done — migrate card to <body>
     setTimeout(function () {
       document.body.appendChild(card);
-      // Clear all inline styles set during the animation
-      card.style.cssText = '';
-      card.classList.remove('envelope-card', 'stage1', 'stage1-mid', 'stage2', 'stage2-vert', 'stage3');
+      card.style.cssText = '';          // clear all inline animation styles
+      card.classList.remove('envelope-card', 'stage1', 'stage2', 'zooming');
 
       scene.classList.add('closed');
       document.body.classList.add('invitation-open');
+      document.body.style.overflow = 'auto';
       revealOnScroll();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 4000);
+    }, 2600);
   }
   wrap.addEventListener('click', openEnvelope);
   wrap.addEventListener('keydown', function (e) {

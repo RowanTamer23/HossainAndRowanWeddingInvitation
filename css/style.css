@@ -217,183 +217,84 @@ body {
   background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%);
 }
 
-/* ── card-stage: hosts the card, clips it at the envelope bottom ─────────── */
+/* ── card-stage: clips card at envelope bottom, allows overflow above ─────── */
 .card-stage {
   position: absolute;
   left: 9%; right: 9%;
   top: -8%; bottom: 8%;
   z-index: 2;
-  perspective: 900px;
-  transform-style: preserve-3d;
-  /* clips card at bottom of envelope; infinite top overflow so card can slide up */
-  clip-path: inset(-200% 0% 0% 0% round 0 0 10px 10px);
+  overflow: hidden;           /* clips card inside envelope pocket */
+  clip-path: inset(0 0 0 0 round 0 0 10px 10px);
+}
+/* Allow card to escape upward above the envelope */
+.card-stage.card-out {
+  clip-path: inset(-500% 0% 0% 0% round 0 0 10px 10px);
+  overflow: visible;
 }
 
 /* ── Invitation paper ─────────────────────────────────────────────────────── */
 .envelope-card {
   position: absolute;
   left: 50%; top: 50%;
-  width: min(90vw, 480px);
-  height: min(90vw, 480px);   /* square – matches folded-in-4 shape */
-  transform: translate(-50%, -50%) translateY(56%);
-  transition: transform 0.72s cubic-bezier(.55, 0, .3, 1);
-  /* perspective context so flap rotations look 3D */
-  perspective: 1400px;
-  perspective-origin: 50% 50%;
+  width: min(90vw, 400px);
+  height: min(90vw, 400px);
+  /* starts tucked inside envelope, slightly below the pocket opening */
+  transform: translate(-50%, -50%) translateY(60%);
+  transition: transform 0.6s cubic-bezier(.55, 0, .3, 1);
   z-index: 4;
+  overflow: hidden;
+  border-radius: 6px;
 }
 
-/* ── Card body: full content, always behind the flaps ────────────────────── */
+/* ── Card surface ─────────────────────────────────────────────────────────── */
 .card-body {
   position: absolute;
   inset: 0;
   background: var(--ivory);
   border: 1.5px solid var(--gold-light);
-  border-radius: 4px;
-  box-shadow: 0 8px 32px rgba(43,51,40,0.22);
+  border-radius: inherit;
+  box-shadow: 0 12px 40px rgba(43,51,40,0.28), 0 2px 8px rgba(43,51,40,0.12);
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: clamp(10px, 2.5vw, 24px);
   overflow: hidden;
+  /* Content scales to whatever size the card is */
+  width: 100%; height: 100%;
 }
 
-/* ── Two ivory flaps that sit on top of the card body and fold away ────────  */
-.paper-flap {
-  position: absolute;
-  background: var(--ivory);
-  border: 1.5px solid var(--gold-light);
-  box-sizing: border-box;
-  /* sheen will give depth during the 3D rotation */
-  overflow: hidden;
-}
-/* prevent flap backs from showing through */
-.paper-flap, .flap-sheen { backface-visibility: hidden; }
-
-/* RIGHT FLAP ─ covers the right half of the card
-   Hinge = LEFT EDGE of this flap = the VERTICAL CREASE of the paper         */
-.flap-r {
-  top: 0; right: 0;
-  width: 50%; height: 100%;
-  border-radius: 0 4px 4px 0;
-  border-left: 1.5px solid rgba(184,157,109,0.55);  /* visible crease line */
-  transform-origin: left center;   /* ← hinge at the vertical crease */
-  transform: rotateY(0deg);
-  z-index: 6;
-  transition: transform 0.78s cubic-bezier(.4, 0, .2, 1);
-}
-/* Fold shadow: right edge is darker (it's the outer edge of the fold) */
-.flap-r .flap-sheen {
-  position: absolute; inset: 0;
-  background: linear-gradient(to right,
-    rgba(43,51,40,0.10) 0%,
-    rgba(43,51,40,0.02) 18%,
-    transparent 40%);
-}
-
-/* BOTTOM FLAP ─ covers the bottom half of the card
-   Hinge = TOP EDGE of this flap = the HORIZONTAL CREASE of the paper        */
-.flap-b {
-  bottom: 0; left: 0;
-  width: 100%; height: 50%;
-  border-radius: 0 0 4px 4px;
-  border-top: 1.5px solid rgba(184,157,109,0.55);   /* visible crease line */
-  transform-origin: center top;    /* ← hinge at the horizontal crease */
-  transform: rotateX(0deg);
-  z-index: 5;
-  transition: transform 0.78s cubic-bezier(.4, 0, .2, 1);
-}
-/* Fold shadow: top of flap is darker when folded */
-.flap-b .flap-sheen {
-  position: absolute; inset: 0;
-  background: linear-gradient(to bottom,
-    rgba(43,51,40,0.10) 0%,
-    rgba(43,51,40,0.02) 18%,
-    transparent 40%);
-}
-
-/* ── Stage 1: paper slides straight up out of the envelope, still folded ─── */
+/* ── Stage 1: paper slides up out of envelope ────────────────────────────── */
 .envelope-card.stage1 {
-  transform: translate(-50%, -50%) translateY(-70%);
+  transform: translate(-50%, -50%) translateY(-65%);
 }
 
-/* ── Stage 1-mid: paper glides to the centre of the viewport ───────────────  */
-.envelope-card.stage1-mid {
+/* ── Stage 2: paper glides to centre of viewport ─────────────────────────── */
+.envelope-card.stage2 {
   transform: translate(-50%, -50%) translateY(-50%);
 }
 
-/* ── Stage 2: RIGHT FLAP unfolds along the vertical crease ─────────────────  */
-/* The right half swings BACKWARD (away from viewer) like opening a book.     */
-/* rotateY(-179deg) = swings all the way around so its back faces forward     */
-.envelope-card.stage2 .flap-r {
-  transform: rotateY(-179deg);
-}
-
-/* ── Stage 2-vert: BOTTOM FLAP unfolds along the horizontal crease ──────────  */
-/* The bottom half swings BACKWARD (up and away) revealing the lower content. */
-.envelope-card.stage2-vert .flap-b {
-  transform: rotateX(179deg);
-}
-
-/* Fade monogram once fully unfolded */
-.envelope-card.stage2-vert .fold-face {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* ── Stage 3: zoom to FILL the screen ──────────────────────────────────────  */
-/* Switch to fixed so we escape the card-stage clip-path entirely.            */
-/* JS sets inline left/top to match current centre before this fires.         */
-.envelope-card.stage3 {
-  position: fixed !important;
-  left: 50% !important;
-  top: 50% !important;
-  transform: translate(-50%, -50%) scale(12) !important;
-  z-index: 20000 !important;
-  transition: transform 0.65s cubic-bezier(.4, 0, .15, 1) !important;
+/* ── Stage 3: JS drives the FLIP expand animation via inline styles ─────── */
+/* When JS sets position:fixed with pixel coords, this class applies the      */
+/* smooth transition to inset:0 / 100vw × 100vh.                              */
+.envelope-card.zooming {
   border-radius: 0 !important;
-  overflow: hidden;
+  transition: left 0.72s cubic-bezier(.4,0,.1,1),
+              top  0.72s cubic-bezier(.4,0,.1,1),
+              width  0.72s cubic-bezier(.4,0,.1,1),
+              height 0.72s cubic-bezier(.4,0,.1,1),
+              border-radius 0.72s ease !important;
+  transform: none !important;   /* JS already positioned it precisely */
 }
 
-/* ── Monogram cover ─────────────────────────────────────────────────────────  */
-.fold-face {
-  position: absolute;
-  inset: 0;
-  background: var(--ivory);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 7;   /* sits above both flaps */
-  transition: opacity 0.55s ease;
-  border-radius: 4px;
+/* ── After DOM migration: restore normal scrollable page ─────────────────── */
+body.invitation-open #invitation {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  transform: none !important;
+  overflow: visible !important;
+  border-radius: 0 !important;
 }
-
-.fold-face.fade {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.fold-face .monogram {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1.4rem, 5vw, 2rem);
-  color: var(--forest);
-  display: block;
-}
-
-.fold-face .sub {
-  display: block;
-  font-size: 0.7rem;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--moss);
-  margin-top: 0.4rem;
-}
-
-/* After DOM migration: reset all fold constraints so page scrolls normally */
-body.invitation-open #invitation .paper-flap,
-body.invitation-open #invitation .fold-face { display: none; }
 body.invitation-open #invitation .card-body {
   position: relative !important;
   inset: auto !important;
@@ -402,6 +303,9 @@ body.invitation-open #invitation .card-body {
   border-radius: 0 !important;
   box-shadow: none !important;
   background: transparent !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
 }
 
 

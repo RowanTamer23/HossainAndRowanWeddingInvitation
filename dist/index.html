@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600&family=Amiri:ital@0;1&family=Aref+Ruqaa&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="./assets/index-xZWgXULw.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-Bqkrxia6.css">
+  <script type="module" crossorigin src="./assets/index-DkkbwtmO.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DdFqiCRb.css">
 </head>
 <body class="lang-en">
 
@@ -27,16 +27,11 @@
       <div class="envelope-pocket"></div>
 
       <div class="card-stage">
-        <!-- ═══ THE INVITATION PAPER ═══
-             Full 480×480 card — content is always behind the flaps.
-             Two flaps (right + bottom) sit on top and fold away to reveal the content.
-        -->
+        <!-- Invitation paper — slides up from envelope then zooms to fill screen -->
         <main id="invitation" class="envelope-card">
-
-          <!-- ── CONTENT layer (always underneath, full card size) ── -->
           <div class="card-body">
 
-            <!-- Corner floral sprigs -->
+            <!-- Corner florals -->
             <div class="floral-corner tl" aria-hidden="true">
               <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0 0C25 10 50 35 60 70" stroke="var(--sage)" stroke-width="2" stroke-linecap="round"/>
@@ -82,7 +77,7 @@
               </svg>
             </div>
 
-            <!-- Top garland -->
+            <!-- Garlands -->
             <div class="floral-edge tc" aria-hidden="true">
               <svg viewBox="0 0 200 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M100 20 C70 15 40 25 10 20" stroke="var(--sage)" stroke-width="1.6" stroke-linecap="round"/>
@@ -108,6 +103,7 @@
               </svg>
             </div>
 
+            <!-- Invitation content -->
             <section id="hero">
               <span class="eyebrow" id="txtFamilyLine">Together with their families</span>
               <h1 class="names">
@@ -192,26 +188,8 @@
               </svg>
               <div class="sig" id="txtFooterSig">With love, Hossain &amp; Rowan</div>
             </footer>
+
           </div><!-- /.card-body -->
-
-          <!-- ── RIGHT FLAP: covers right half, folds along vertical crease ── -->
-          <!-- Hinge = left edge of this flap = vertical center of the paper   -->
-          <div class="paper-flap flap-r" aria-hidden="true">
-            <div class="flap-sheen"></div>
-          </div>
-
-          <!-- ── BOTTOM FLAP: covers bottom half, folds along horizontal crease ── -->
-          <!-- Hinge = top edge of this flap = horizontal center of the paper      -->
-          <div class="paper-flap flap-b" aria-hidden="true">
-            <div class="flap-sheen"></div>
-          </div>
-
-          <!-- ── MONOGRAM COVER: shown in centre while paper is folded ── -->
-          <div class="fold-face" id="foldFace">
-            <span class="monogram" id="foldMonogram">H &amp; R</span>
-            <span class="sub">12 · 10 · 2026</span>
-          </div>
-
         </main>
       </div><!-- /.card-stage -->
 
@@ -227,8 +205,8 @@
         <div class="ribbon-h"></div>
         <div class="wax-seal" id="txtSeal">H&amp;R</div>
       </div>
-    </div><!-- /.envelope -->
-  </div><!-- /.envelope-wrap -->
+    </div>
+  </div>
   <p class="tap-hint" id="txtTapHint">Tap the seal to open</p>
 </section>
 
