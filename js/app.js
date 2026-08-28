@@ -108,6 +108,7 @@
     if (opened) return;
     opened = true;
 
+    scene.classList.add('opening');   // fade out "You're Invited" and tap hint immediately
     wrap.classList.add('open');
     envelope.classList.add('open');   // flap flips open, seal drops behind and fades
 

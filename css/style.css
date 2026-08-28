@@ -482,6 +482,13 @@ body.invitation-open main section#hero {
   margin-bottom: 1.4rem;
   z-index: 1;
   direction: ltr;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+#envelope-scene.opening .envelope-header-bilingual {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
 }
 
 .envelope-eyebrow-en {
@@ -491,15 +498,12 @@ body.invitation-open main section#hero {
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--moss);
-  z-index: 1;
 }
 
 .envelope-eyebrow-dot {
   color: var(--gold);
   font-size: 0.7rem;
   opacity: 0.85;
-  z-index: 1;
-
 }
 
 .envelope-eyebrow-ar {
@@ -508,8 +512,6 @@ body.invitation-open main section#hero {
   font-weight: 600;
   letter-spacing: 0 !important;
   color: var(--moss);
-  z-index: 1;
-
 }
 
 .wax-seal {
@@ -570,6 +572,13 @@ body.invitation-open main section#hero {
   text-align: center;
   animation: pulse 2.4s ease-in-out infinite;
   z-index: 1;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+#envelope-scene.opening .envelope-hint-bilingual {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
 }
 
 .tap-hint-en {
