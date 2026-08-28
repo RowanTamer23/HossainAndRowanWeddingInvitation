@@ -467,7 +467,11 @@ body.invitation-open #invitation .card-content {
   transform: rotateX(180deg);
   z-index: 1;   /* behind card */
 }
-.envelope.open .seal-group { opacity: 0; transform: translateY(-50%) scale(0.6) rotate(15deg); }
+.envelope.open .seal-group {
+  opacity: 0;
+  transform: translateY(-50%) scale(0.6) rotate(15deg);
+  z-index: 1;   /* drop behind card-stage immediately so it fades out behind, not in front */
+}
 
 .tap-hint {
   margin-top: 1.9rem;
