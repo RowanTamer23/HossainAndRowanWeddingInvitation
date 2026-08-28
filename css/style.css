@@ -269,11 +269,12 @@ body {
   clip-path: inset(0 0 0 0 round 0 0 10px 10px);
 }
 /* card-out: release clip upward + sideways so card can rise above envelope.
-   z-index stays at 2 — pocket body (z:3) still covers the card bottom.
-   The open flap (z:1) is behind the card.                                    */
+   Hoisted to front of flap in both z-index and 3D depth.                       */
 .card-stage.card-out {
   clip-path: inset(-800% -50% 0% -50%);
   overflow: visible;
+  z-index: 10 !important;
+  transform: translateZ(15px);
 }
 
 /* ── Invitation paper ─────────────────────────────────────────────────────── */
@@ -296,8 +297,9 @@ body {
 
 /* Emerge stage: card smoothly rises out of envelope and floats at center view */
 .envelope-card.emerge {
-  transform: translate(-50%, -50%) translateY(-50%);
+  transform: translate(-50%, -50%) translateY(-50%) translateZ(20px);
   box-shadow: 0 20px 50px rgba(43,51,40,0.30), 0 6px 16px rgba(43,51,40,0.18);
+  z-index: 15 !important;
 }
 
 /* Zooming: FLIP transition to fill full viewport */
@@ -550,10 +552,10 @@ body.invitation-open main section#hero {
   transform: rotateX(0deg);
 }
 
-/* As soon as envelope opens: flap drops behind card-stage */
+/* As soon as envelope opens: flap drops behind card-stage in both 3D depth and z-index */
 .envelope.open .envelope-flap {
-  transform: rotateX(180deg);
-  z-index: 1;   /* behind card */
+  transform: rotateX(180deg) translateZ(-15px);
+  z-index: 0 !important;
 }
 .envelope.open .seal-group {
   opacity: 0;
