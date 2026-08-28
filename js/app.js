@@ -119,7 +119,6 @@
 
     // t=1000ms: glide to viewport centre
     setTimeout(function () {
-      card.parentElement.style.zIndex = '8';
       card.classList.add('stage2');
     }, 1000);
 

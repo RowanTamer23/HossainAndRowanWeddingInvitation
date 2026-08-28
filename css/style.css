@@ -220,16 +220,19 @@ body {
 /* ── card-stage: clips card at envelope bottom, allows overflow above ─────── */
 .card-stage {
   position: absolute;
-  left: 9%; right: 9%;
+  /* extend left/right so the card isn't clipped when wider than the envelope */
+  left: -5%; right: -5%;
   top: -8%; bottom: 8%;
-  z-index: 2;
-  overflow: hidden;           /* clips card inside envelope pocket */
-  clip-path: inset(0 0 0 0 round 0 0 10px 10px);
+  z-index: 2;              /* behind flap while sealed */
+  overflow: hidden;
+  /* clip only bottom (inside pocket), allow full top + sides */
+  clip-path: inset(5% 5% 0% 5% round 0 0 10px 10px);
 }
-/* Allow card to escape upward above the envelope */
+/* Once the card starts coming out, expand clip upward and raise above the flap */
 .card-stage.card-out {
-  clip-path: inset(-500% 0% 0% 0% round 0 0 10px 10px);
+  clip-path: inset(-600% -100% 0% -100%);
   overflow: visible;
+  z-index: 10 !important;  /* card stage in front of everything including flap */
 }
 
 /* ── Invitation paper ─────────────────────────────────────────────────────── */
@@ -241,7 +244,7 @@ body {
   /* starts tucked inside envelope, slightly below the pocket opening */
   transform: translate(-50%, -50%) translateY(60%);
   transition: transform 0.6s cubic-bezier(.55, 0, .3, 1);
-  z-index: 4;
+  z-index: 6;
   overflow: hidden;
   border-radius: 6px;
 }
@@ -431,13 +434,19 @@ body.invitation-open #invitation .card-content {
   width: 100%;
   height: 62%;
   transform-origin: top center;
-  transition: transform 1.1s cubic-bezier(.65,0,.35,1);
-  z-index: 4;
+  /* flap opens in 1.1s; z-index drops immediately so card slides in front */
+  transition: transform 1.1s cubic-bezier(.65,0,.35,1),
+              z-index 0s 0s;          /* drop z-index immediately on open */
+  z-index: 4;                         /* in front while sealed */
   filter: drop-shadow(0 6px 10px rgba(43,51,40,0.15));
-  transform: rotateX(0deg); /* Base transform for 3D flip */
+  transform: rotateX(0deg);
 }
 
-.envelope.open .envelope-flap { transform: rotateX(180deg); z-index: 1; }
+/* As soon as envelope opens: flap drops behind card-stage */
+.envelope.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;   /* behind card */
+}
 .envelope.open .seal-group { opacity: 0; transform: translateY(-50%) scale(0.6) rotate(15deg); }
 
 .tap-hint {
