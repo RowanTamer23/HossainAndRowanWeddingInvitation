@@ -116,9 +116,9 @@
     setTimeout(function () {
       card.parentElement.classList.add('card-out');
       card.classList.add('emerge');
-    }, 750);
+    }, 350);
 
-    // ── Step 2: Smooth FLIP Fullscreen Expansion (1650ms) ────────────────
+    // ── Step 2: Smooth FLIP Fullscreen Expansion (1300ms) ────────────────
     // Card has fully settled at center. We measure its static position and animate to full viewport.
     setTimeout(function () {
       var rect = card.getBoundingClientRect();
@@ -153,9 +153,9 @@
           }, 350);
         });
       });
-    }, 1650);
+    }, 1300);
 
-    // ── Step 3: Complete transition & enable normal scrolling (2450ms) ───
+    // ── Step 3: Complete transition & enable normal scrolling (2100ms) ───
     setTimeout(function () {
       card.style.cssText = '';
       card.classList.remove('envelope-card', 'emerge', 'zooming', 'fade-to-content');
@@ -172,7 +172,7 @@
 
       revealOnScroll();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 2450);
+    }, 2100);
   }
   wrap.addEventListener('click', openEnvelope);
   wrap.addEventListener('keydown', function (e) {

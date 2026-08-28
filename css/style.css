@@ -247,8 +247,10 @@ body {
 /* ── 2. Card stage: in front of back (z:1) & open flap (z:0), behind pocket (z:5) ── */
 .card-stage {
   position: absolute;
-  left: 8%; right: 8%;
-  top: 0; bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   z-index: 3;
   overflow: hidden;
   clip-path: inset(0 0 0 0 round 0 0 8px 8px);
@@ -259,41 +261,41 @@ body {
   z-index: 3;
 }
 
-/* ── 3. Invitation paper ── */
+/* ── 3. Invitation paper (tall portrait card matching reference) ── */
 .envelope-card {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: min(78vw, 290px);
-  height: min(78vw, 290px);
-  transform: translate(-50%, 15%); /* Tucked completely inside pocket */
+  width: min(68vw, 248px);
+  height: min(94vw, 340px);
+  transform: translate(-50%, 25%); /* Tucked completely inside pocket */
   transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
               box-shadow 0.7s ease;
   z-index: 3;
   overflow: hidden;
   border-radius: 4px;
-  box-shadow: 0 4px 10px rgba(43,51,40,0.12);
+  box-shadow: 0 4px 12px rgba(43,51,40,0.14);
 }
 
-/* Emerge stage: card smoothly rises out of envelope pocket and floats at center view */
+/* Emerge stage: card smoothly rises out of envelope pocket matching reference */
 .envelope-card.emerge {
-  transform: translate(-50%, -50%) translateY(-50%);
+  transform: translate(-50%, -58%);
   box-shadow: 0 20px 50px rgba(43,51,40,0.30), 0 6px 16px rgba(43,51,40,0.18);
   z-index: 3;
 }
 
-/* ── 4. Front pocket: in front of card bottom ── */
+/* ── 4. Front pocket: 75% height, leaves top open to reveal inner liner ── */
 .envelope-pocket {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 100%;
+  height: 76%;
   background: linear-gradient(160deg, var(--sage-light), var(--sage));
   border-radius: 0 0 10px 10px;
-  box-shadow: var(--paper-shadow);
+  box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.08);
   border: 1.5px solid var(--gold);
-  border-top: 3px solid var(--gold); /* Gold foil trim at opening */
+  border-top: 2.5px solid var(--gold); /* Gold foil trim at opening */
   overflow: hidden;
   z-index: 5;
   pointer-events: none;
@@ -330,7 +332,7 @@ body {
   width: 100%; height: 100%;
 }
 
-/* ── COVER: names + date only, shown while card is in envelope / zooming ──── */
+/* ── COVER: H&R + 12 · 10 · 2026 matching reference mockup ──── */
 .card-cover {
   position: absolute;
   inset: 0;
@@ -338,8 +340,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
-  padding: clamp(20px, 6vw, 48px);
+  gap: 0.75rem;
+  padding: 24px;
   background: var(--ivory);
   z-index: 2;
   transition: opacity 0.4s ease;
@@ -350,63 +352,23 @@ body {
   pointer-events: none;
 }
 
-.cover-eyebrow {
-  display: block;
-  font-family: var(--font-body);
-  font-size: clamp(0.6rem, 1.8vw, 0.75rem);
-  font-weight: 400;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--moss);
-}
-
-.cover-rule {
-  width: clamp(40px, 25%, 80px);
-  height: 1px;
-  background: linear-gradient(to right, transparent, var(--gold), transparent);
-  margin: 0.2rem 0;
-}
-
-.cover-names {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 500;
-  font-size: clamp(1.6rem, 7vw, 3.2rem);
-  color: var(--forest);
-  line-height: 1.15;
-  text-align: center;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.1em;
-}
-
-.cover-amp {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 0.65em;
-  color: var(--gold);
-  display: block;
-  line-height: 1;
-}
-
-.cover-date {
-  font-family: var(--font-body);
-  font-size: clamp(0.7rem, 2vw, 0.9rem);
-  font-weight: 400;
-  letter-spacing: 1.5px;
-  color: var(--ink);
-  margin: 0;
-}
-
-.cover-time {
-  font-family: var(--font-body);
-  font-size: clamp(0.6rem, 1.6vw, 0.75rem);
-  font-weight: 300;
+.cover-monogram {
+  font-family: 'Playfair Display', serif !important;
+  font-size: clamp(2.3rem, 8vw, 3.2rem);
+  font-weight: 700;
   letter-spacing: 2px;
+  color: var(--forest);
+  line-height: 1;
+  direction: ltr !important;
+}
+
+.cover-date-num {
+  font-family: var(--font-body);
+  font-size: clamp(0.82rem, 2.6vw, 1rem);
+  font-weight: 400;
+  letter-spacing: 4.5px;
   color: var(--moss);
-  margin: 0;
+  direction: ltr !important;
 }
 
 /* ── FULL CONTENT: hidden during envelope & initial zoom, revealed when open ── */
