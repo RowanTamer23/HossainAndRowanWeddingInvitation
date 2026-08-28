@@ -31,26 +31,26 @@
       dateLocale: "en-US"
     },
     ar: {
-      inviteEyebrow: "أنتم مدعوون", tapHint: "المسي الختم لفتح الدعوة", seal: "ح ر",
+      inviteEyebrow: "أنتم مدعوون", tapHint: "المسوا الختم لفتح الدعوة", seal: "ح & ر",
       familyLine: "بمشاركة أسرتيهما", name1: "حسين", amp: "و", name2: "روان",
-      tagline: "يتشرّفان بدعوتكم للاحتفال بزفافهما — أمسية مفعمة بالحب والفرح وبداية جديدة.",
+      tagline: "يتشرفان بدعوتكم لمشاركتهما فرحة زفافهما — أمسية مليئة بالحب والسعادة وبداية جديدة.",
       saveDateEyebrow: "احفظوا التاريخ", dateSub: "احفظوا التاريخ",
-      timeLabel: "٧:٠٠ مساءً", timeSub: "الحضور والحفل",
+      timeLabel: "٧:٠٠ مساءً", timeSub: "موعد الحضور وبدء الحفل",
       findUs: "موقع الحفل", venueName: "قاعة سي جاردن المفتوحة",
-      venueNote: 'اضغطوا على "فتح في خرائط جوجل" لمعرفة المكان.',
-      openMaps: "فتح في خرائط جوجل", copyLink: "نسخ رابط الموقع", copiedToast: "تم نسخ رابط الموقع!",
-      kindlyRespond: "يُرجى تأكيد الحضور", willYouJoin: "هل ستتمكن من الانضمام إلينا؟ 💍",
-      yourName: "اسمكم", namePlaceholder: "مثال: سارة أحمد", yourResponse: "ردّكم",
-      accept: "يسعدنا الحضور", decline: "يؤسفنا الاعتذار", sendRsvp: "إرسال الرد",
-      changeResponse: "تغيير الرد",
-      confirmYes: function (n) { return "رائع يا " + n + "! لا نطيق الانتظار للاحتفال معكم — نراكم في ١٢ أكتوبر!"; },
-      confirmNo: function (n) { return "سنشتاق إليكم يا " + n + ". شكرًا لإخباركم إيانا — ستكونون في قلوبنا في هذا اليوم."; },
-      footerSig: "بكل حب، حسين وروان",
+      venueNote: 'اضغطوا على "فتح في خرائط جوجل" للوصول إلى المكان.',
+      openMaps: "فتح في خرائط جوجل", copyLink: "نسخ رابط الموقع", copiedToast: "تم نسخ رابط الموقع بنجاح!",
+      kindlyRespond: "تأكيد الحضور", willYouJoin: "يسعدنا حضوركم ومشاركتنا الفرحة 💍",
+      yourName: "الاسم الكريم", namePlaceholder: "مثال: سارة أحمد", yourResponse: "هل ستتمكن من الحضور؟",
+      accept: "بكل سرور يشرفني الحضور 🌿", decline: "أعتذر لعدم التمكن من الحضور 🤍", sendRsvp: "إرسال الرد",
+      changeResponse: "تعديل الرد",
+      confirmYes: function (n) { return "أهلاً بك يا " + n + "! يسعدنا جداً حضورك ونتطلع للاحتفال معاً في ١٢ أكتوبر!"; },
+      confirmNo: function (n) { return "سنشتاق إليك يا " + n + ". نشكرك على إعلامنا، وستكون في قلوبنا دائماً."; },
+      footerSig: "مع كامل الحب، حسين وروان",
       dateLocale: "ar-EG"
     }
   };
 
-  var currentLang = 'en';
+  var currentLang = 'ar';
 
   var idMap = {
     txtInviteEyebrow: 'inviteEyebrow', txtTapHint: 'tapHint', txtSeal: 'seal', foldMonogram: 'seal',
@@ -62,7 +62,8 @@
     txtYourName: 'yourName', txtYourResponse: 'yourResponse',
     txtAccept: 'accept', txtDecline: 'decline', txtSendRsvp: 'sendRsvp',
     txtChangeYes: 'changeResponse', txtChangeNo: 'changeResponse',
-    txtFooterSig: 'footerSig'
+    txtFooterSig: 'footerSig',
+    covEyebrow: 'familyLine', covName1: 'name1', covName2: 'name2', covTime: 'timeLabel'
   };
 
   function applyLanguage(lang) {
@@ -97,11 +98,11 @@
      folded card slides out, then visibly unfolds, then the
      invitation itself is revealed.
   ====================================================== */
-  var wrap     = document.getElementById('envelopeWrap');
+  var wrap = document.getElementById('envelopeWrap');
   var envelope = document.getElementById('envelope');
-  var card     = document.getElementById('invitation');
-  var scene    = document.getElementById('envelope-scene');
-  var opened   = false;
+  var card = document.getElementById('invitation');
+  var scene = document.getElementById('envelope-scene');
+  var opened = false;
 
 
   function openEnvelope() {
@@ -117,13 +118,13 @@
     setTimeout(function () {
       card.parentElement.classList.add('card-out');
       card.classList.add('stage1');
-    }, 350);
+    }, 300);
 
     // ── Phase 2: RISE (1500ms) ────────────────────────────────────────────
     // Card bottom clears the envelope top. Shorter, snappier transition.
     setTimeout(function () {
       card.classList.add('stage2');
-    }, 1500);
+    }, 2000);
 
     // ── Phase 3: ZOOM (2150ms) ────────────────────────────────────────────
     // Move card to <body> FIRST (escapes envelope-wrap's perspective context),
@@ -134,9 +135,9 @@
 
       card.style.cssText = [
         'position:fixed',
-        'left:'   + Math.round(rect.left)   + 'px',
-        'top:'    + Math.round(rect.top)    + 'px',
-        'width:'  + Math.round(rect.width)  + 'px',
+        'left:' + Math.round(rect.left) + 'px',
+        'top:' + Math.round(rect.top) + 'px',
+        'width:' + Math.round(rect.width) + 'px',
         'height:' + Math.round(rect.height) + 'px',
         'transform:none',
         'transition:none',
@@ -149,9 +150,9 @@
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
           card.classList.add('zooming');
-          card.style.left   = '0';
-          card.style.top    = '0';
-          card.style.width  = '100vw';
+          card.style.left = '0';
+          card.style.top = '0';
+          card.style.width = '100vw';
           card.style.height = '100vh';
           card.style.borderRadius = '0';
         });
@@ -166,6 +167,13 @@
       scene.classList.add('closed');
       document.body.classList.add('invitation-open');
       document.body.style.overflow = 'auto';
+
+      var scrollArrow = document.getElementById('scrollArrow');
+      if (scrollArrow) {
+        scrollArrow.classList.remove('hidden');
+        scrollArrow.classList.add('visible');
+      }
+
       revealOnScroll();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }, 3050);
@@ -177,8 +185,32 @@
   document.body.style.overflow = 'hidden';
 
   /* ======================================================
-     SCROLL REVEAL
+     SCROLL ARROW INDICATOR & SCROLL REVEAL
   ====================================================== */
+  var scrollArrow = document.getElementById('scrollArrow');
+  if (scrollArrow) {
+    scrollArrow.addEventListener('click', function () {
+      var detailsSec = document.getElementById('details');
+      if (detailsSec) {
+        detailsSec.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollBy({ top: window.innerHeight * 0.75, behavior: 'smooth' });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', function () {
+    var arrow = document.getElementById('scrollArrow');
+    if (!arrow) return;
+    if (window.scrollY > 80) {
+      arrow.classList.add('hidden');
+      arrow.classList.remove('visible');
+    } else if (document.body.classList.contains('invitation-open')) {
+      arrow.classList.remove('hidden');
+      arrow.classList.add('visible');
+    }
+  }, { passive: true });
+
   function revealOnScroll() {
     var sections = document.querySelectorAll('main section');
     var io = new IntersectionObserver(function (entries) {
@@ -194,8 +226,11 @@
 
   function updateDate() {
     var dateBig = document.getElementById('dateBig');
+    var covDate = document.getElementById('covDate');
     if (!isNaN(eventDate.getTime())) {
-      dateBig.textContent = eventDate.toLocaleDateString(STR[currentLang].dateLocale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      var dateStr = eventDate.toLocaleDateString(STR[currentLang].dateLocale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      if (dateBig) dateBig.textContent = dateStr;
+      if (covDate) covDate.textContent = dateStr;
     }
   }
   function updateCountdown() {
@@ -319,6 +354,6 @@
     } catch (e) { }
   })();
 
-  applyLanguage('en');
+  applyLanguage('ar');
 
 })();

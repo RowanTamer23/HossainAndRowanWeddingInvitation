@@ -22,11 +22,51 @@
 }
 
 body.lang-ar {
-  --font-display: 'Amiri', serif;
-  --font-script: 'Aref Ruqaa', serif;
+  --font-display: 'Cairo', 'Noto Naskh Arabic', sans-serif;
+  --font-script:  'Cairo', 'Noto Naskh Arabic', sans-serif;
   --script-style: normal;
-  --font-body: 'Tajawal', sans-serif;
+  --font-body:    'Cairo', sans-serif;
+  letter-spacing: 0 !important;
 }
+
+/* Arabic-specific typography refinements for exceptional readability */
+body.lang-ar .cover-names,
+body.lang-ar .names {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: normal;
+  line-height: 1.3;
+}
+
+body.lang-ar .names {
+  font-size: clamp(2.2rem, 8.5vw, 3.8rem);
+}
+
+body.lang-ar .cover-names {
+  font-size: clamp(1.8rem, 7.5vw, 3.2rem);
+}
+
+body.lang-ar .tagline,
+body.lang-ar p {
+  font-size: clamp(0.95rem, 2.6vw, 1.12rem);
+  line-height: 2;
+  letter-spacing: 0 !important;
+}
+
+body.lang-ar .eyebrow,
+body.lang-ar .cover-eyebrow {
+  letter-spacing: 0 !important;
+  font-weight: 600;
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
+}
+
+body.lang-ar .sig {
+  font-style: normal !important;
+  font-weight: 700;
+  font-size: 1.35rem;
+}
+
+
 
 * {
   box-sizing: border-box;
@@ -135,7 +175,7 @@ body {
   align-items: center;
   justify-content: center;
   background: radial-gradient(circle, var(--ivory) 40%, var(--ivory-deep) 100%);
-  transition: opacity 0.8s ease, visibility 0.8s ease;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
 #envelope-scene.closed {
@@ -943,3 +983,70 @@ footer .sig {
   width: 100%;
   height: 100%;
 }
+
+/* ── Scroll-down arrow on the right side ────────────────────────────────────
+   Appears after the invitation opens to guide guests down the page.
+   Bounces gently, pinned strictly to the right side, fades on scroll.        */
+@keyframes arrowBounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
+}
+
+#scrollArrow {
+  position: fixed;
+  right: 20px !important;
+  left: auto !important;
+  bottom: 26px !important;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(253, 251, 247, 0.94);
+  border: 1.5px solid var(--gold);
+  box-shadow: 0 4px 16px rgba(43, 51, 40, 0.18), 0 0 12px rgba(197, 160, 89, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--forest);
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease, background 0.2s ease, box-shadow 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#scrollArrow.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  animation: arrowBounce 1.8s ease-in-out infinite;
+}
+
+#scrollArrow.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  animation: none;
+}
+
+#scrollArrow:hover {
+  background: var(--ivory);
+  border-color: var(--forest);
+  box-shadow: 0 6px 20px rgba(43, 51, 40, 0.25), 0 0 16px rgba(197, 160, 89, 0.4);
+}
+
+#scrollArrow svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--forest);
+  transition: transform 0.2s ease;
+}
+
+#scrollArrow:hover svg {
+  transform: translateY(2px);
+}
+
+
