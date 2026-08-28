@@ -109,25 +109,16 @@
     opened = true;
 
     wrap.classList.add('open');
-    envelope.classList.add('open');   // flap lifts, seal fades
+    envelope.classList.add('open');   // flap flips open, seal drops behind and fades
 
-    // ── Phase 1: PULL (350ms) ─────────────────────────────────────────────
-    // Release the clip-path upward so the card can exit the envelope mouth.
-    // Stage1 starts the slow friction-pull — 1.05s easing starting slow.
+    // ── Step 1: Card emerges smoothly to center screen (350ms) ───────────
     setTimeout(function () {
       card.parentElement.classList.add('card-out');
-      card.classList.add('stage1');
-    }, 300);
+      card.classList.add('emerge');
+    }, 350);
 
-    // ── Phase 2: RISE (1500ms) ────────────────────────────────────────────
-    // Card bottom clears the envelope top. Shorter, snappier transition.
-    setTimeout(function () {
-      card.classList.add('stage2');
-    }, 2000);
-
-    // ── Phase 3: ZOOM (2150ms) ────────────────────────────────────────────
-    // Move card to <body> FIRST (escapes envelope-wrap's perspective context),
-    // then FLIP-animate from current pixel position to full-screen.
+    // ── Step 2: Smooth FLIP Fullscreen Expansion (1250ms) ────────────────
+    // Card has fully settled at center. We measure its static position and animate to full viewport.
     setTimeout(function () {
       var rect = card.getBoundingClientRect();
       document.body.appendChild(card);
@@ -154,14 +145,19 @@
           card.style.width = '100vw';
           card.style.height = '100vh';
           card.style.borderRadius = '0';
+
+          // Seamlessly crossfade cover -> full invitation during expansion
+          setTimeout(function () {
+            card.classList.add('fade-to-content');
+          }, 350);
         });
       });
-    }, 2150);
+    }, 1250);
 
-    // ── Finish: reveal invitation (3050ms) ────────────────────────────────
+    // ── Step 3: Complete transition & enable normal scrolling (2100ms) ───
     setTimeout(function () {
       card.style.cssText = '';
-      card.classList.remove('envelope-card', 'stage1', 'stage2', 'zooming');
+      card.classList.remove('envelope-card', 'emerge', 'zooming', 'fade-to-content');
 
       scene.classList.add('closed');
       document.body.classList.add('invitation-open');
@@ -175,7 +171,7 @@
 
       revealOnScroll();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 3050);
+    }, 2100);
   }
   wrap.addEventListener('click', openEnvelope);
   wrap.addEventListener('keydown', function (e) {
