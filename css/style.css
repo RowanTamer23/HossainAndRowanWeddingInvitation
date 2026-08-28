@@ -262,29 +262,30 @@ body {
    covers the card's lower portion — the core of the "inside envelope" illusion */
 .card-stage {
   position: absolute;
-  left: 9%; right: 9%;
-  top: -8%; bottom: 8%;
+  left: 8%; right: 8%;
+  top: 0; bottom: 0;
   z-index: 2;
   overflow: hidden;
-  clip-path: inset(0 0 0 0 round 0 0 8px 8px);
+  clip-path: inset(0 0 0 0 round 0 0 10px 10px);
 }
 /* card-out: release clip upward + sideways so card can rise above envelope.
    z-index stays at 2 — pocket body (z:3) still covers the card bottom.
    The open flap (z:1) is behind the card.                                    */
 .card-stage.card-out {
-  clip-path: inset(-800% -80% 0% -80%);
+  clip-path: inset(-800% -50% 0% -50%);
   overflow: visible;
 }
 
 /* ── Invitation paper ─────────────────────────────────────────────────────── */
 /* Width matches envelope opening so it looks snug inside the pocket.         */
-/* Starts pushed DOWN so the card is fully hidden inside the envelope body.   */
+/* Starts tucked deep down inside the pocket — 100% hidden before tap.        */
 .envelope-card {
   position: absolute;
-  left: 50%; top: 50%;
+  left: 50%;
+  top: 50%;
   width: min(78vw, 290px);
   height: min(78vw, 290px);
-  transform: translate(-50%, -50%) translateY(45%);
+  transform: translate(-50%, 20%); /* Tucked deep inside pocket */
   transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
               box-shadow 0.7s ease;
   z-index: 6;
