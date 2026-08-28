@@ -112,7 +112,10 @@
     wrap.classList.add('open');
     envelope.classList.add('open');                          // t=0: ribbon/seal release, flap opens
     setTimeout(function () { card.classList.add('stage1'); }, 350);   // slides out above envelope, folded in 4
-    setTimeout(function () { card.classList.add('stage1-mid'); }, 1050); // glides to middle of screen
+    setTimeout(function () { 
+      card.classList.add('stage1-mid'); 
+      card.parentElement.style.zIndex = '4'; // Bring card-stage in front of envelope pocket
+    }, 1050); // glides to middle of screen
     setTimeout(function () { card.classList.add('stage2'); }, 1850);  // starts unfolding horizontally (0.8s later)
     setTimeout(function () {
       card.classList.add('stage2-vert');                       // unfolds vertically
