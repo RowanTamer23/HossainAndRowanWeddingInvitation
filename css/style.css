@@ -246,6 +246,30 @@ body {
   border-radius: 6px;
 }
 
+/* Stage 1: paper slides up and out of the envelope */
+.envelope-card.stage1 {
+  transform: translate(-50%, -50%) translateY(-65%);
+}
+
+/* Stage 2: paper glides to the centre of the viewport */
+.envelope-card.stage2 {
+  transform: translate(-50%, -50%) translateY(-50%);
+}
+
+/* Zooming: JS applies position:fixed + pixel coords, then this class
+   transitions left/top/width/height to 0/0/100vw/100vh (FLIP technique) */
+.envelope-card.zooming {
+  border-radius: 0 !important;
+  transition: left   0.75s cubic-bezier(.4, 0, .1, 1),
+              top    0.75s cubic-bezier(.4, 0, .1, 1),
+              width  0.75s cubic-bezier(.4, 0, .1, 1),
+              height 0.75s cubic-bezier(.4, 0, .1, 1),
+              border-radius 0.75s ease !important;
+  transform: none !important;
+}
+
+
+
 /* ── Card surface ─────────────────────────────────────────────────────────── */
 .card-body {
   position: absolute;
@@ -254,39 +278,89 @@ body {
   border: 1.5px solid var(--gold-light);
   border-radius: inherit;
   box-shadow: 0 12px 40px rgba(43,51,40,0.28), 0 2px 8px rgba(43,51,40,0.12);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: clamp(10px, 2.5vw, 24px);
   overflow: hidden;
-  /* Content scales to whatever size the card is */
   width: 100%; height: 100%;
 }
 
-/* ── Stage 1: paper slides up out of envelope ────────────────────────────── */
-.envelope-card.stage1 {
-  transform: translate(-50%, -50%) translateY(-65%);
+/* ── COVER: names + date only, shown while card is in envelope / zooming ──── */
+.card-cover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: clamp(20px, 6vw, 48px);
+  background: var(--ivory);
+  z-index: 2;
 }
 
-/* ── Stage 2: paper glides to centre of viewport ─────────────────────────── */
-.envelope-card.stage2 {
-  transform: translate(-50%, -50%) translateY(-50%);
+.cover-eyebrow {
+  display: block;
+  font-family: var(--font-body);
+  font-size: clamp(0.6rem, 1.8vw, 0.75rem);
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--moss);
 }
 
-/* ── Stage 3: JS drives the FLIP expand animation via inline styles ─────── */
-/* When JS sets position:fixed with pixel coords, this class applies the      */
-/* smooth transition to inset:0 / 100vw × 100vh.                              */
-.envelope-card.zooming {
-  border-radius: 0 !important;
-  transition: left 0.72s cubic-bezier(.4,0,.1,1),
-              top  0.72s cubic-bezier(.4,0,.1,1),
-              width  0.72s cubic-bezier(.4,0,.1,1),
-              height 0.72s cubic-bezier(.4,0,.1,1),
-              border-radius 0.72s ease !important;
-  transform: none !important;   /* JS already positioned it precisely */
+.cover-rule {
+  width: clamp(40px, 25%, 80px);
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  margin: 0.2rem 0;
 }
 
-/* ── After DOM migration: restore normal scrollable page ─────────────────── */
+.cover-names {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.6rem, 7vw, 3.2rem);
+  color: var(--forest);
+  line-height: 1.15;
+  text-align: center;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1em;
+}
+
+.cover-amp {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.65em;
+  color: var(--gold);
+  display: block;
+  line-height: 1;
+}
+
+.cover-date {
+  font-family: var(--font-body);
+  font-size: clamp(0.7rem, 2vw, 0.9rem);
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  margin: 0;
+}
+
+.cover-time {
+  font-family: var(--font-body);
+  font-size: clamp(0.6rem, 1.6vw, 0.75rem);
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: var(--moss);
+  margin: 0;
+}
+
+/* ── FULL CONTENT: hidden while card is animating, shown after open ─────────  */
+.card-content {
+  display: none;   /* hidden until invitation-open */
+}
+
+/* ── After DOM migration: swap cover→content, restore page layout ───────────  */
 body.invitation-open #invitation {
   position: static !important;
   width: auto !important;
@@ -305,8 +379,16 @@ body.invitation-open #invitation .card-body {
   background: transparent !important;
   width: auto !important;
   height: auto !important;
-  padding: 0 !important;
 }
+body.invitation-open #invitation .card-cover {
+  display: none !important;   /* hide cover once page is revealed */
+}
+body.invitation-open #invitation .card-content {
+  display: block !important;  /* show full invitation content */
+  position: relative !important;
+}
+
+
 
 
 /* ribbon + bow + seal, sitting across the sealed envelope */
