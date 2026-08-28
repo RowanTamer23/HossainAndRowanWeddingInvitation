@@ -53,7 +53,6 @@
   var currentLang = 'ar';
 
   var idMap = {
-    txtInviteEyebrow: 'inviteEyebrow', txtTapHint: 'tapHint', txtSeal: 'seal', foldMonogram: 'seal',
     txtFamilyLine: 'familyLine', txtName1: 'name1', txtAmp: 'amp', txtName2: 'name2', txtTagline: 'tagline',
     txtSaveDateEyebrow: 'saveDateEyebrow', txtDateSub: 'dateSub', txtTimeLabel: 'timeLabel', txtTimeSub: 'timeSub',
     txtFindUs: 'findUs', txtVenueName: 'venueName', txtVenueNote: 'venueNote',

@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="./assets/index-BsPCYGuc.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BLXQpVNW.css">
+  <script type="module" crossorigin src="./assets/index-BZqjzVjA.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Dz4lIfbJ.css">
 </head>
 <body class="lang-ar">
 
@@ -27,7 +27,11 @@
 
 <!-- ============ ENVELOPE OVERLAY ============ -->
 <section id="envelope-scene">
-  <span class="eyebrow" id="txtInviteEyebrow">أنتم مدعوون</span>
+  <div class="envelope-header-bilingual">
+    <span class="envelope-eyebrow-en">You're Invited</span>
+    <span class="envelope-eyebrow-dot">✦</span>
+    <span class="envelope-eyebrow-ar">أنتم مدعوون</span>
+  </div>
 
   <div class="envelope-wrap" id="envelopeWrap" role="button" tabindex="0"
        aria-label="Open the envelope to reveal the invitation">
@@ -241,7 +245,10 @@
       </div>
     </div>
   </div>
-  <p class="tap-hint" id="txtTapHint">Tap the seal to open</p>
+  <div class="envelope-hint-bilingual">
+    <p class="tap-hint-en">Tap the seal to open</p>
+    <p class="tap-hint-ar">المسوا الختم لفتح الدعوة</p>
+  </div>
 </section>
 
 <div class="toast" id="toast"></div>

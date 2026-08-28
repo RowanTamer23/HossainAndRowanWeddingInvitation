@@ -469,6 +469,40 @@ body.invitation-open #invitation .card-content {
 }
 
 
+/* Bilingual Envelope Header */
+.envelope-header-bilingual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 1.4rem;
+  z-index: 1;
+  direction: ltr;
+}
+
+.envelope-eyebrow-en {
+  font-family: var(--font-body);
+  font-size: clamp(0.7rem, 2vw, 0.82rem);
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--moss);
+}
+
+.envelope-eyebrow-dot {
+  color: var(--gold);
+  font-size: 0.7rem;
+  opacity: 0.85;
+}
+
+.envelope-eyebrow-ar {
+  font-family: 'Cairo', sans-serif;
+  font-size: clamp(0.85rem, 2.3vw, 0.96rem);
+  font-weight: 600;
+  letter-spacing: 0 !important;
+  color: var(--moss);
+}
+
 .wax-seal {
   position: relative;
   width: 82px;
@@ -479,10 +513,13 @@ body.invitation-open #invitation .card-content {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-display);
+  font-family: 'Playfair Display', serif !important;
+  font-style: italic;
   font-weight: 600;
   color: var(--ivory);
-  font-size: 1.15rem;
+  font-size: 1.25rem;
+  letter-spacing: 1px;
+  direction: ltr !important;
   z-index: 2;
 }
 
@@ -513,17 +550,39 @@ body.invitation-open #invitation .card-content {
   z-index: 1;   /* drop behind card-stage immediately so it fades out behind, not in front */
 }
 
-.tap-hint {
-  margin-top: 1.9rem;
-  font-size: 0.8rem;
-  letter-spacing: 3px;
+/* Bilingual Tap Hint */
+.envelope-hint-bilingual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  margin-top: 1.8rem;
+  text-align: center;
+  animation: pulse 2.4s ease-in-out infinite;
+  z-index: 1;
+}
+
+.tap-hint-en {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
   color: var(--moss);
-  animation: pulse 2.2s ease-in-out infinite;
+  margin: 0;
+}
+
+.tap-hint-ar {
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0 !important;
+  color: var(--moss);
+  margin: 0;
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.5; }
+  0%, 100% { opacity: 0.55; }
   50% { opacity: 1; }
 }
 
