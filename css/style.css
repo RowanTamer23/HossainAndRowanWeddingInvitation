@@ -217,142 +217,145 @@ body {
   background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%);
 }
 
-/* the folded card that lives inside the envelope and unfolds on open */
+/* ── card-stage: hosts the card, clips it at the envelope bottom ─────────── */
 .card-stage {
   position: absolute;
-  left: 9%;
-  right: 9%;
-  top: -8%;
-  bottom: 8%;
+  left: 9%; right: 9%;
+  top: -8%; bottom: 8%;
   z-index: 2;
   perspective: 900px;
   transform-style: preserve-3d;
-  clip-path: inset(-200% 0% 0% 0% round 0 0 10px 10px); /* Clip overflowing card at bottom, allow overflow at top */
+  /* clips card at bottom of envelope; infinite top overflow so card can slide up */
+  clip-path: inset(-200% 0% 0% 0% round 0 0 10px 10px);
 }
 
-/* ── Paper wrapper: provides perspective context for 3D child panels ─────── */
+/* ── Invitation paper ─────────────────────────────────────────────────────── */
 .envelope-card {
   position: absolute;
-  left: 50%;
-  top: 50%;
+  left: 50%; top: 50%;
   width: min(90vw, 480px);
-  height: min(90vw, 480px); /* Square */
-  transform-origin: center center;
-  transform: translate(-50%, -50%) translateY(55%) scale(1);
-  transition: transform 0.75s cubic-bezier(.55,0,.3,1);
-  perspective: 1000px;          /* 3D context for child panels */
+  height: min(90vw, 480px);   /* square – matches folded-in-4 shape */
+  transform: translate(-50%, -50%) translateY(56%);
+  transition: transform 0.72s cubic-bezier(.55, 0, .3, 1);
+  /* perspective context so flap rotations look 3D */
+  perspective: 1400px;
   perspective-origin: 50% 50%;
   z-index: 4;
-  opacity: 1;
 }
 
-/* ── The four quadrant panels ─────────────────────────────────────────────── */
-/* Each panel is exactly half the card (50%×50%).                             */
-/* In folded state the off-panels rotate 180° on their shared hinge edge      */
-/* so they sit face-to-face with the top-left panel.                          */
-
-.fold-panel {
-  position: absolute;
-  width: 50%;
-  height: 50%;
-  background: var(--ivory);
-  border: 1px solid rgba(184,157,109,0.35);
-  overflow: hidden;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  transition: transform 0.72s cubic-bezier(.6,0,.3,1),
-              box-shadow 0.72s ease;
-}
-
-/* Top-left panel — this one never moves, acts as the anchor */
-.fold-panel.tl {
-  top: 0; left: 0;
-  border-radius: 4px 0 0 0;
-  transform-origin: right bottom; /* hinge = inner corner */
-  transform: rotateY(0deg);
-  z-index: 4;
-  box-shadow: 4px 4px 12px rgba(43,51,40,0.18);
-}
-
-/* Top-right panel — folds behind TL on vertical hinge (left edge of TR) */
-.fold-panel.tr {
-  top: 0; right: 0;
-  border-radius: 0 4px 0 0;
-  transform-origin: left bottom; /* hinge = inner corner */
-  transform: rotateY(179.5deg); /* folded flat behind TL */
-  z-index: 3;
-}
-
-/* Bottom-left panel — folds behind TL on horizontal hinge (top edge of BL) */
-.fold-panel.bl {
-  bottom: 0; left: 0;
-  border-radius: 0 0 0 4px;
-  transform-origin: right top; /* hinge = inner corner */
-  transform: rotateX(-179.5deg); /* folded flat behind TL */
-  z-index: 2;
-}
-
-/* Bottom-right panel — folds behind BL (double-fold) */
-.fold-panel.br {
-  bottom: 0; right: 0;
-  border-radius: 0 0 4px 0;
-  transform-origin: left top; /* hinge = inner corner */
-  transform: rotateY(179.5deg); /* folded flat behind TR */
-  z-index: 1;
-}
-
-/* Fold-shadow sheen — makes the folded surface look lit differently */
-.fold-panel::after {
-  content: '';
+/* ── Card body: full content, always behind the flaps ────────────────────── */
+.card-body {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, transparent 60%);
-  pointer-events: none;
-  transition: opacity 0.5s ease;
+  background: var(--ivory);
+  border: 1.5px solid var(--gold-light);
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(43,51,40,0.22);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(10px, 2.5vw, 24px);
+  overflow: hidden;
 }
 
-/* ── Stage 1: slides straight up, still fully folded ─────────────────────── */
-.envelope-card.stage1 {
-  transform: translate(-50%, -50%) translateY(-72%) scale(1);
+/* ── Two ivory flaps that sit on top of the card body and fold away ────────  */
+.paper-flap {
+  position: absolute;
+  background: var(--ivory);
+  border: 1.5px solid var(--gold-light);
+  box-sizing: border-box;
+  /* sheen will give depth during the 3D rotation */
+  overflow: hidden;
 }
+/* prevent flap backs from showing through */
+.paper-flap, .flap-sheen { backface-visibility: hidden; }
 
-/* ── Stage 1-mid: glides to screen center, still folded ──────────────────── */
-.envelope-card.stage1-mid {
-  transform: translate(-50%, -50%) translateY(-50%) scale(1);
-}
-
-/* ── Stage 2: unfold TR & BL panels (horizontal axis first) ──────────────── */
-/* TR swings open (rotateY → 0), BL stays; BR follows TR's hinge */
-.envelope-card.stage2 .fold-panel.tr {
+/* RIGHT FLAP ─ covers the right half of the card
+   Hinge = LEFT EDGE of this flap = the VERTICAL CREASE of the paper         */
+.flap-r {
+  top: 0; right: 0;
+  width: 50%; height: 100%;
+  border-radius: 0 4px 4px 0;
+  border-left: 1.5px solid rgba(184,157,109,0.55);  /* visible crease line */
+  transform-origin: left center;   /* ← hinge at the vertical crease */
   transform: rotateY(0deg);
-  box-shadow: -4px 4px 12px rgba(43,51,40,0.18);
+  z-index: 6;
+  transition: transform 0.78s cubic-bezier(.4, 0, .2, 1);
 }
-.envelope-card.stage2 .fold-panel.br {
-  transform: rotateY(0deg); /* now lives in BR slot, still waiting for BL unfold */
-  box-shadow: -4px -4px 12px rgba(43,51,40,0.12);
+/* Fold shadow: right edge is darker (it's the outer edge of the fold) */
+.flap-r .flap-sheen {
+  position: absolute; inset: 0;
+  background: linear-gradient(to right,
+    rgba(43,51,40,0.10) 0%,
+    rgba(43,51,40,0.02) 18%,
+    transparent 40%);
 }
 
-/* ── Stage 2-vert: unfold BL & BR (vertical axis) ────────────────────────── */
-.envelope-card.stage2-vert .fold-panel.bl {
+/* BOTTOM FLAP ─ covers the bottom half of the card
+   Hinge = TOP EDGE of this flap = the HORIZONTAL CREASE of the paper        */
+.flap-b {
+  bottom: 0; left: 0;
+  width: 100%; height: 50%;
+  border-radius: 0 0 4px 4px;
+  border-top: 1.5px solid rgba(184,157,109,0.55);   /* visible crease line */
+  transform-origin: center top;    /* ← hinge at the horizontal crease */
   transform: rotateX(0deg);
-  box-shadow: 4px -4px 12px rgba(43,51,40,0.18);
+  z-index: 5;
+  transition: transform 0.78s cubic-bezier(.4, 0, .2, 1);
 }
-.envelope-card.stage2-vert .fold-panel.br {
-  transform: rotateY(0deg) rotateX(0deg);
-  box-shadow: -4px -4px 12px rgba(43,51,40,0.18);
+/* Fold shadow: top of flap is darker when folded */
+.flap-b .flap-sheen {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(43,51,40,0.10) 0%,
+    rgba(43,51,40,0.02) 18%,
+    transparent 40%);
 }
 
-/* ── Fully open: remove inner sheen ─────────────────────────────────────── */
-.envelope-card.stage2-vert .fold-panel::after { opacity: 0; }
+/* ── Stage 1: paper slides straight up out of the envelope, still folded ─── */
+.envelope-card.stage1 {
+  transform: translate(-50%, -50%) translateY(-70%);
+}
 
-/* ── Stage 3: zoom in to fill viewport ───────────────────────────────────── */
+/* ── Stage 1-mid: paper glides to the centre of the viewport ───────────────  */
+.envelope-card.stage1-mid {
+  transform: translate(-50%, -50%) translateY(-50%);
+}
+
+/* ── Stage 2: RIGHT FLAP unfolds along the vertical crease ─────────────────  */
+/* The right half swings BACKWARD (away from viewer) like opening a book.     */
+/* rotateY(-179deg) = swings all the way around so its back faces forward     */
+.envelope-card.stage2 .flap-r {
+  transform: rotateY(-179deg);
+}
+
+/* ── Stage 2-vert: BOTTOM FLAP unfolds along the horizontal crease ──────────  */
+/* The bottom half swings BACKWARD (up and away) revealing the lower content. */
+.envelope-card.stage2-vert .flap-b {
+  transform: rotateX(179deg);
+}
+
+/* Fade monogram once fully unfolded */
+.envelope-card.stage2-vert .fold-face {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Stage 3: zoom to FILL the screen ──────────────────────────────────────  */
+/* Switch to fixed so we escape the card-stage clip-path entirely.            */
+/* JS sets inline left/top to match current centre before this fires.         */
 .envelope-card.stage3 {
-  transform: translate(-50%, -50%) translateY(-50%) scale(5.0);
-  opacity: 1;
-  z-index: 10000;
-  perspective: none; /* flatten once filling screen */
+  position: fixed !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) scale(12) !important;
+  z-index: 20000 !important;
+  transition: transform 0.65s cubic-bezier(.4, 0, .15, 1) !important;
+  border-radius: 0 !important;
+  overflow: hidden;
 }
 
+/* ── Monogram cover ─────────────────────────────────────────────────────────  */
 .fold-face {
   position: absolute;
   inset: 0;
@@ -361,8 +364,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 10;
-  transition: opacity 0.6s ease;
+  z-index: 7;   /* sits above both flaps */
+  transition: opacity 0.55s ease;
   border-radius: 4px;
 }
 
@@ -374,7 +377,7 @@ body {
 .fold-face .monogram {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.3rem, 4.5vw, 1.8rem);
+  font-size: clamp(1.4rem, 5vw, 2rem);
   color: var(--forest);
   display: block;
 }
@@ -382,44 +385,25 @@ body {
 .fold-face .sub {
   display: block;
   font-size: 0.7rem;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
   color: var(--moss);
+  margin-top: 0.4rem;
 }
 
-/* Full invitation content sits inside TL panel, sized 200×200% so it     */
-/* visually fills the whole 4-panel square once all panels swing open.     */
-.panel-content-full {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 200%;
-  height: 200%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: clamp(12px, 3vw, 28px);
-  overflow: hidden;
-  background: var(--ivory);
-}
-
-/* After the card becomes the normal page, reset panel layout */
-main#invitation:not(.envelope-card) .fold-panel {
+/* After DOM migration: reset all fold constraints so page scrolls normally */
+body.invitation-open #invitation .paper-flap,
+body.invitation-open #invitation .fold-face { display: none; }
+body.invitation-open #invitation .card-body {
   position: relative !important;
-  width: 100% !important;
-  height: auto !important;
-  transform: none !important;
+  inset: auto !important;
   overflow: visible !important;
   border: none !important;
+  border-radius: 0 !important;
   box-shadow: none !important;
+  background: transparent !important;
 }
-main#invitation:not(.envelope-card) .panel-content-full {
-  position: relative !important;
-  width: 100% !important;
-  height: auto !important;
-  overflow: visible !important;
-}
+
 
 /* ribbon + bow + seal, sitting across the sealed envelope */
 .seal-group {

@@ -110,28 +110,49 @@
     document.body.style.overflow = 'auto';
 
     wrap.classList.add('open');
-    envelope.classList.add('open');                          // t=0: ribbon/seal release, flap opens
-    setTimeout(function () { card.classList.add('stage1'); }, 350);   // slides out above envelope, folded in 4
-    setTimeout(function () { 
-      card.classList.add('stage1-mid'); 
-      card.parentElement.style.zIndex = '4'; // Bring card-stage in front of envelope pocket
-    }, 1050); // glides to middle of screen
-    setTimeout(function () { card.classList.add('stage2'); }, 1850);  // starts unfolding horizontally (0.8s later)
+    envelope.classList.add('open');                              // t=0: ribbon/seal, flap opens
+
+    // t=350ms: slides up out of envelope pocket, still folded flat
+    setTimeout(function () { card.classList.add('stage1'); }, 350);
+
+    // t=1050ms: glides to viewport centre (card-stage z hoisted)
     setTimeout(function () {
-      card.classList.add('stage2-vert');                       // unfolds vertically
-      foldFace.classList.add('fade');
-    }, 2550);
-    setTimeout(function () { card.classList.add('stage3'); }, 3250);  // zooms to screen
+      card.classList.add('stage1-mid');
+      card.parentElement.style.zIndex = '6';
+    }, 1050);
+
+    // t=1850ms: right flap folds away (vertical crease opens)
+    setTimeout(function () { card.classList.add('stage2'); }, 1850);
+
+    // t=2550ms: bottom flap folds away (horizontal crease opens), monogram fades
+    setTimeout(function () { card.classList.add('stage2-vert'); }, 2550);
+
+    // t=3250ms: zoom — switch to position:fixed FIRST so clip-path can't clip it
     setTimeout(function () {
-      // Append the card directly to the body and remove envelope constraints
+      card.style.position = 'fixed';
+      card.style.left     = '50%';
+      card.style.top      = '50%';
+      card.style.zIndex   = '20000';
+      // tiny delay so the browser registers the fixed position before the transform kicks in
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          card.classList.add('stage3');
+        });
+      });
+    }, 3250);
+
+    // t=4000ms: migrate card to body, restore normal page
+    setTimeout(function () {
       document.body.appendChild(card);
+      // Clear all inline styles set during the animation
+      card.style.cssText = '';
       card.classList.remove('envelope-card', 'stage1', 'stage1-mid', 'stage2', 'stage2-vert', 'stage3');
-      
-      scene.classList.add('closed');                          // the invitation itself appears
-      document.body.classList.add('invitation-open');         // trigger main zoom-in animation
+
+      scene.classList.add('closed');
+      document.body.classList.add('invitation-open');
       revealOnScroll();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 3950);
+    }, 4000);
   }
   wrap.addEventListener('click', openEnvelope);
   wrap.addEventListener('keydown', function (e) {
