@@ -217,60 +217,79 @@ body {
   background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%);
 }
 
-/* ── card-stage: clips card at envelope bottom, allows overflow above ─────── */
+/* ── card-stage: container that clips the card at the envelope mouth ────────
+   z-index 2 keeps it BELOW the pocket body (z:3), so the pocket always
+   covers the card's lower portion — the core of the "inside envelope" illusion */
 .card-stage {
   position: absolute;
-  left: 9%; right: 9%;       /* matches envelope proportions */
+  left: 9%; right: 9%;
   top: -8%; bottom: 8%;
-  z-index: 2;                /* below pocket (z:3) → pocket covers card bottom */
+  z-index: 2;
   overflow: hidden;
-  clip-path: inset(0 0 0 0 round 0 0 10px 10px);
+  clip-path: inset(0 0 0 0 round 0 0 8px 8px);
 }
-/* Once sliding out: let card escape upward and sideways; z-index stays at 2
-   so the pocket body (z:3) still covers the card's lower portion naturally,
-   while the open flap (z:1) is behind the card.                              */
+/* card-out: release clip upward + sideways so card can rise above envelope.
+   z-index stays at 2 — pocket body (z:3) still covers the card bottom.
+   The open flap (z:1) is behind the card.                                    */
 .card-stage.card-out {
-  clip-path: inset(-600% -60% 0% -60%);  /* open top + sides, keep bottom clip */
+  clip-path: inset(-800% -80% 0% -80%);
   overflow: visible;
-  /* NO z-index change here — pocket body remains in front of card bottom */
 }
-
 
 /* ── Invitation paper ─────────────────────────────────────────────────────── */
+/* Width matches envelope opening so it looks snug inside the pocket.         */
+/* Starts pushed DOWN so the card is fully hidden inside the envelope body.   */
 .envelope-card {
   position: absolute;
   left: 50%; top: 50%;
-  width: min(90vw, 400px);
-  height: min(90vw, 400px);
-  /* starts tucked inside envelope, slightly below the pocket opening */
-  transform: translate(-50%, -50%) translateY(60%);
-  transition: transform 0.6s cubic-bezier(.55, 0, .3, 1);
+  width: min(78vw, 285px);    /* fits inside envelope opening with a little margin */
+  height: min(78vw, 285px);
+  /* push card down so its top is inside the envelope pocket (fully hidden)   */
+  transform: translate(-50%, -50%) translateY(42%);
+  /* slow-start easing = paper friction as it's pulled through the pocket     */
+  transition: transform 1.05s cubic-bezier(0.5, 0, 0.12, 1),
+              box-shadow 0.8s ease;
   z-index: 6;
   overflow: hidden;
-  border-radius: 6px;
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(43,51,40,0.12);
 }
 
-/* Stage 1: paper slides up and out of the envelope */
+/* Phase 1 — PEEK / PULL ─────────────────────────────────────────────────────
+   Card slides up slowly like someone is pulling it through friction.
+   About 65% of the card is visible above the envelope; 35% still in pocket.
+   The envelope pocket body (z:3) covers the lower third — key realism.       */
 .envelope-card.stage1 {
-  transform: translate(-50%, -50%) translateY(-65%);
+  transform: translate(-50%, -50%) translateY(-55%);
+  box-shadow: 0 14px 40px rgba(43,51,40,0.30),
+              0 4px 12px rgba(43,51,40,0.18);
 }
 
-/* Stage 2: paper glides to the centre of the viewport */
+/* Phase 2 — RISE ────────────────────────────────────────────────────────────
+   Card lifts up fully — bottom clears the envelope top.
+   Shorter, snappier transition (no more friction now it's free).              */
 .envelope-card.stage2 {
-  transform: translate(-50%, -50%) translateY(-50%);
+  transform: translate(-50%, -50%) translateY(-88%);
+  transition: transform 0.55s cubic-bezier(0.38, 0, 0.18, 1),
+              box-shadow 0.4s ease;
+  box-shadow: 0 22px 60px rgba(43,51,40,0.35),
+              0 6px 20px rgba(43,51,40,0.22);
 }
 
-/* Zooming: JS applies position:fixed + pixel coords, then this class
-   transitions left/top/width/height to 0/0/100vw/100vh (FLIP technique) */
+/* Zooming: JS applies position:fixed + pixel coords via FLIP technique,
+   then this class transitions left/top/width/height to 0/0/100vw/100vh      */
 .envelope-card.zooming {
   border-radius: 0 !important;
-  transition: left   0.75s cubic-bezier(.4, 0, .1, 1),
-              top    0.75s cubic-bezier(.4, 0, .1, 1),
-              width  0.75s cubic-bezier(.4, 0, .1, 1),
-              height 0.75s cubic-bezier(.4, 0, .1, 1),
-              border-radius 0.75s ease !important;
+  box-shadow: none !important;
+  transition: left   0.8s cubic-bezier(.4, 0, .1, 1),
+              top    0.8s cubic-bezier(.4, 0, .1, 1),
+              width  0.8s cubic-bezier(.4, 0, .1, 1),
+              height 0.8s cubic-bezier(.4, 0, .1, 1),
+              border-radius 0.8s ease,
+              box-shadow 0.3s ease !important;
   transform: none !important;
 }
+
 
 
 

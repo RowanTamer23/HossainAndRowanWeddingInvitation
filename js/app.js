@@ -109,36 +109,29 @@
     opened = true;
 
     wrap.classList.add('open');
-    envelope.classList.add('open');     // t=0: flap lifts, seal releases
+    envelope.classList.add('open');   // flap lifts, seal fades
 
-    // t=350ms: let card-stage clip expand upward so card can exit
+    // ── Phase 1: PULL (350ms) ─────────────────────────────────────────────
+    // Release the clip-path upward so the card can exit the envelope mouth.
+    // Stage1 starts the slow friction-pull — 1.05s easing starting slow.
     setTimeout(function () {
       card.parentElement.classList.add('card-out');
-      card.classList.add('stage1');     // slides up above envelope
+      card.classList.add('stage1');
     }, 350);
 
-    // t=1000ms: glide to viewport centre
+    // ── Phase 2: RISE (1500ms) ────────────────────────────────────────────
+    // Card bottom clears the envelope top. Shorter, snappier transition.
     setTimeout(function () {
       card.classList.add('stage2');
-    }, 1000);
+    }, 1500);
 
-    // t=1750ms: FLIP zoom — card physically grows to fill the entire viewport
+    // ── Phase 3: ZOOM (2150ms) ────────────────────────────────────────────
+    // Move card to <body> FIRST (escapes envelope-wrap's perspective context),
+    // then FLIP-animate from current pixel position to full-screen.
     setTimeout(function () {
-      // ── FLIP: First ──────────────────────────────────────────────────────
-      // getBoundingClientRect() always returns viewport-space coordinates,
-      // regardless of CSS transforms on the element or its ancestors.
       var rect = card.getBoundingClientRect();
-
-      // ── KEY FIX: move card to <body> BEFORE position:fixed ───────────────
-      // .envelope-wrap has `perspective` on it. Any ancestor with perspective
-      // or transform makes position:fixed children position relative to THAT
-      // element, not the real viewport. Moving to <body> first escapes this.
       document.body.appendChild(card);
 
-      // ── FLIP: Invert ─────────────────────────────────────────────────────
-      // Set position:fixed at the card's exact current visual coords.
-      // Because we just moved to <body> there's no rogue perspective ancestor,
-      // so left/top now correctly map to viewport pixels — no visual jump.
       card.style.cssText = [
         'position:fixed',
         'left:'   + Math.round(rect.left)   + 'px',
@@ -148,14 +141,11 @@
         'transform:none',
         'transition:none',
         'z-index:20000',
-        'border-radius:6px',
+        'border-radius:4px',
         'overflow:hidden',
         'margin:0'
       ].join(';');
 
-      // ── FLIP: Play ───────────────────────────────────────────────────────
-      // Two rAFs so the browser has painted the "first" position before we
-      // apply the transition + target values (otherwise it skips the tween).
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
           card.classList.add('zooming');
@@ -166,11 +156,11 @@
           card.style.borderRadius = '0';
         });
       });
-    }, 1750);
+    }, 2150);
 
-    // t=2600ms: zoom is complete — clear styles and show invitation
+    // ── Finish: reveal invitation (3050ms) ────────────────────────────────
     setTimeout(function () {
-      card.style.cssText = '';   // wipe all inline animation styles
+      card.style.cssText = '';
       card.classList.remove('envelope-card', 'stage1', 'stage2', 'zooming');
 
       scene.classList.add('closed');
@@ -178,7 +168,7 @@
       document.body.style.overflow = 'auto';
       revealOnScroll();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 2600);
+    }, 3050);
   }
   wrap.addEventListener('click', openEnvelope);
   wrap.addEventListener('keydown', function (e) {
