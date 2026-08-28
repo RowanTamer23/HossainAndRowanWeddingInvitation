@@ -61,8 +61,7 @@
     txtYourName: 'yourName', txtYourResponse: 'yourResponse',
     txtAccept: 'accept', txtDecline: 'decline', txtSendRsvp: 'sendRsvp',
     txtChangeYes: 'changeResponse', txtChangeNo: 'changeResponse',
-    txtFooterSig: 'footerSig',
-    covEyebrow: 'familyLine', covName1: 'name1', covName2: 'name2', covTime: 'timeLabel'
+    txtFooterSig: 'footerSig'
   };
 
   function applyLanguage(lang) {
