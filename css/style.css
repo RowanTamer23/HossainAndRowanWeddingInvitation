@@ -231,9 +231,58 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
-  transform-style: preserve-3d;
 }
 
+/* ── 1. Back of envelope (behind open flap & card) ── */
+.envelope-back {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, var(--forest), #23381e);
+  border-radius: 0 0 10px 10px;
+  box-shadow: var(--paper-shadow);
+  border: 1.5px solid var(--gold);
+  z-index: 1;
+}
+
+/* ── 2. Card stage: in front of back (z:1) & open flap (z:0), behind pocket (z:5) ── */
+.card-stage {
+  position: absolute;
+  left: 8%; right: 8%;
+  top: 0; bottom: 0;
+  z-index: 3;
+  overflow: hidden;
+  clip-path: inset(0 0 0 0 round 0 0 8px 8px);
+}
+.card-stage.card-out {
+  clip-path: inset(-800% -50% 0% -50%);
+  overflow: visible;
+  z-index: 3;
+}
+
+/* ── 3. Invitation paper ── */
+.envelope-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(78vw, 290px);
+  height: min(78vw, 290px);
+  transform: translate(-50%, 15%); /* Tucked completely inside pocket */
+  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.7s ease;
+  z-index: 3;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 4px 10px rgba(43,51,40,0.12);
+}
+
+/* Emerge stage: card smoothly rises out of envelope pocket and floats at center view */
+.envelope-card.emerge {
+  transform: translate(-50%, -50%) translateY(-50%);
+  box-shadow: 0 20px 50px rgba(43,51,40,0.30), 0 6px 16px rgba(43,51,40,0.18);
+  z-index: 3;
+}
+
+/* ── 4. Front pocket: in front of card bottom ── */
 .envelope-pocket {
   position: absolute;
   left: 0;
@@ -246,8 +295,8 @@ body {
   border: 1.5px solid var(--gold);
   border-top: 3px solid var(--gold); /* Gold foil trim at opening */
   overflow: hidden;
-  z-index: 3;
-  transform: translate(0); /* Force transform stacking context to respect z-index layering */
+  z-index: 5;
+  pointer-events: none;
 }
 
 .envelope-pocket::after {
@@ -255,51 +304,6 @@ body {
   position: absolute;
   inset: 0;
   background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,0.18) 50%, transparent 60%);
-}
-
-/* ── card-stage: container that clips the card at the envelope mouth ────────
-   z-index 2 keeps it BELOW the pocket body (z:3), so the pocket always
-   covers the card's lower portion — the core of the "inside envelope" illusion */
-.card-stage {
-  position: absolute;
-  left: 8%; right: 8%;
-  top: 0; bottom: 0;
-  z-index: 2;
-  overflow: hidden;
-  clip-path: inset(0 0 0 0 round 0 0 10px 10px);
-}
-/* card-out: release clip upward + sideways so card can rise above envelope.
-   Hoisted to front of flap in both z-index and 3D depth.                       */
-.card-stage.card-out {
-  clip-path: inset(-800% -50% 0% -50%);
-  overflow: visible;
-  z-index: 10 !important;
-  transform: translateZ(15px);
-}
-
-/* ── Invitation paper ─────────────────────────────────────────────────────── */
-/* Width matches envelope opening so it looks snug inside the pocket.         */
-/* Starts tucked deep down inside the pocket — 100% hidden before tap.        */
-.envelope-card {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: min(78vw, 290px);
-  height: min(78vw, 290px);
-  transform: translate(-50%, 20%); /* Tucked deep inside pocket */
-  transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.7s ease;
-  z-index: 6;
-  overflow: hidden;
-  border-radius: 4px;
-  box-shadow: 0 4px 10px rgba(43,51,40,0.12);
-}
-
-/* Emerge stage: card smoothly rises out of envelope and floats at center view */
-.envelope-card.emerge {
-  transform: translate(-50%, -50%) translateY(-50%) translateZ(20px);
-  box-shadow: 0 20px 50px rgba(43,51,40,0.30), 0 6px 16px rgba(43,51,40,0.18);
-  z-index: 15 !important;
 }
 
 /* Zooming: FLIP transition to fill full viewport */
@@ -467,13 +471,19 @@ body.invitation-open main section#hero {
   right: 0;
   top: calc(min(84vw, 360px) * 0.40);
   transform: translateY(-50%);
-  z-index: 5;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
+.envelope.open .seal-group {
+  opacity: 0;
+  transform: translateY(-50%) scale(0.6) rotate(15deg);
+  z-index: 1;
+  pointer-events: none;
+}
 
 /* Bilingual Envelope Header */
 .envelope-header-bilingual {
@@ -544,23 +554,16 @@ body.invitation-open main section#hero {
   width: 100%;
   height: 62%;
   transform-origin: top center;
-  /* flap opens smoothly in 0.7s; z-index drops immediately so card slides in front */
-  transition: transform 0.7s cubic-bezier(.4, 0, .2, 1),
-              z-index 0s 0s;
-  z-index: 4;
+  transition: transform 0.7s cubic-bezier(.4, 0, .2, 1);
+  z-index: 8;
   filter: drop-shadow(0 6px 10px rgba(43,51,40,0.15));
   transform: rotateX(0deg);
 }
 
-/* As soon as envelope opens: flap drops behind card-stage in both 3D depth and z-index */
+/* As soon as envelope opens: flap drops behind envelope-back and card */
 .envelope.open .envelope-flap {
-  transform: rotateX(180deg) translateZ(-15px);
-  z-index: 0 !important;
-}
-.envelope.open .seal-group {
-  opacity: 0;
-  transform: translateY(-50%) scale(0.6) rotate(15deg);
-  z-index: 1;   /* drop behind card-stage immediately so it fades out behind, not in front */
+  transform: rotateX(180deg);
+  z-index: 0;
 }
 
 /* Bilingual Tap Hint */
