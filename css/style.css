@@ -312,40 +312,6 @@ body {
   transform: none !important;
 }
 
-/* Crossfade from cover to full content during zoom */
-.card-cover {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: clamp(20px, 6vw, 48px);
-  background: var(--ivory);
-  z-index: 2;
-  transition: opacity 0.4s ease;
-}
-
-.envelope-card.fade-to-content .card-cover {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.card-content {
-  display: none;
-  opacity: 0;
-  transition: opacity 0.45s ease;
-}
-
-.envelope-card.fade-to-content .card-content {
-  display: block;
-  opacity: 1;
-}
-
-
-
-
 /* ── Card surface ─────────────────────────────────────────────────────────── */
 .card-body {
   position: absolute;
@@ -370,6 +336,12 @@ body {
   padding: clamp(20px, 6vw, 48px);
   background: var(--ivory);
   z-index: 2;
+  transition: opacity 0.4s ease;
+}
+
+.envelope-card.fade-to-content .card-cover {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .cover-eyebrow {
@@ -431,12 +403,19 @@ body {
   margin: 0;
 }
 
-/* ── FULL CONTENT: hidden while card is animating, shown after open ─────────  */
+/* ── FULL CONTENT: hidden during envelope & initial zoom, revealed when open ── */
 .card-content {
-  display: none;   /* hidden until invitation-open */
+  display: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
-/* ── After DOM migration: swap cover→content, restore page layout ───────────  */
+.envelope-card.fade-to-content .card-content {
+  display: block !important;
+  opacity: 1 !important;
+}
+
+/* ── After DOM migration: swap cover→content, restore full page layout ──────── */
 body.invitation-open #invitation {
   position: static !important;
   width: auto !important;
@@ -444,7 +423,10 @@ body.invitation-open #invitation {
   transform: none !important;
   overflow: visible !important;
   border-radius: 0 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
+
 body.invitation-open #invitation .card-body {
   position: relative !important;
   inset: auto !important;
@@ -456,12 +438,21 @@ body.invitation-open #invitation .card-body {
   width: auto !important;
   height: auto !important;
 }
+
 body.invitation-open #invitation .card-cover {
-  display: none !important;   /* hide cover once page is revealed */
+  display: none !important;
 }
+
 body.invitation-open #invitation .card-content {
-  display: block !important;  /* show full invitation content */
+  display: block !important;
+  opacity: 1 !important;
   position: relative !important;
+  pointer-events: auto !important;
+}
+
+body.invitation-open main section#hero {
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 
@@ -500,12 +491,15 @@ body.invitation-open #invitation .card-content {
   letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--moss);
+  z-index: 1;
 }
 
 .envelope-eyebrow-dot {
   color: var(--gold);
   font-size: 0.7rem;
   opacity: 0.85;
+  z-index: 1;
+
 }
 
 .envelope-eyebrow-ar {
@@ -514,6 +508,8 @@ body.invitation-open #invitation .card-content {
   font-weight: 600;
   letter-spacing: 0 !important;
   color: var(--moss);
+  z-index: 1;
+
 }
 
 .wax-seal {

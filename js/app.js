@@ -208,9 +208,15 @@
 
   function revealOnScroll() {
     var sections = document.querySelectorAll('main section');
+    sections.forEach(function (s) {
+      var r = s.getBoundingClientRect();
+      if (r.top < window.innerHeight * 0.9) {
+        s.classList.add('revealed');
+      }
+    });
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) { if (entry.isIntersecting) { entry.target.classList.add('revealed'); } });
-    }, { threshold: 0.2 });
+    }, { threshold: 0.15 });
     sections.forEach(function (s) { io.observe(s); });
   }
 
