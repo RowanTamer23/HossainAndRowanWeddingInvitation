@@ -354,11 +354,11 @@ body {
 
 .cover-monogram {
   font-family: 'Playfair Display', Georgia, serif !important;
-  font-size: clamp(2.2rem, 7.5vw, 3rem);
-  font-weight: 700;
+  font-size: clamp(2rem, 7vw, 3rem);
+  font-weight: 600;
   letter-spacing: 2px;
   color: var(--forest);
-  line-height: 1;
+  line-height: 0.8;
   direction: ltr !important;
   margin: 0;
 }
