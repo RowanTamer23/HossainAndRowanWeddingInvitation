@@ -123,21 +123,29 @@
       card.classList.add('stage2');
     }, 1000);
 
-    // t=1750ms: FLIP zoom — card grows to fill the entire screen
+    // t=1750ms: FLIP zoom — card physically grows to fill the entire viewport
     setTimeout(function () {
       // ── FLIP: First ──────────────────────────────────────────────────────
-      // Measure exactly where the card sits right now (as an absolutely-
-      // positioned child of .card-stage, centred in the viewport).
+      // getBoundingClientRect() always returns viewport-space coordinates,
+      // regardless of CSS transforms on the element or its ancestors.
       var rect = card.getBoundingClientRect();
 
+      // ── KEY FIX: move card to <body> BEFORE position:fixed ───────────────
+      // .envelope-wrap has `perspective` on it. Any ancestor with perspective
+      // or transform makes position:fixed children position relative to THAT
+      // element, not the real viewport. Moving to <body> first escapes this.
+      document.body.appendChild(card);
+
       // ── FLIP: Invert ─────────────────────────────────────────────────────
-      // Switch to fixed at the card's CURRENT pixel position — no visual jump.
+      // Set position:fixed at the card's exact current visual coords.
+      // Because we just moved to <body> there's no rogue perspective ancestor,
+      // so left/top now correctly map to viewport pixels — no visual jump.
       card.style.cssText = [
         'position:fixed',
-        'left:'   + rect.left   + 'px',
-        'top:'    + rect.top    + 'px',
-        'width:'  + rect.width  + 'px',
-        'height:' + rect.height + 'px',
+        'left:'   + Math.round(rect.left)   + 'px',
+        'top:'    + Math.round(rect.top)    + 'px',
+        'width:'  + Math.round(rect.width)  + 'px',
+        'height:' + Math.round(rect.height) + 'px',
         'transform:none',
         'transition:none',
         'z-index:20000',
@@ -147,8 +155,8 @@
       ].join(';');
 
       // ── FLIP: Play ───────────────────────────────────────────────────────
-      // Next paint: add .zooming which applies the size/position transitions,
-      // then immediately set the "last" state (full screen).
+      // Two rAFs so the browser has painted the "first" position before we
+      // apply the transition + target values (otherwise it skips the tween).
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
           card.classList.add('zooming');
@@ -161,10 +169,9 @@
       });
     }, 1750);
 
-    // t=2600ms: zoom transition is done — migrate card to <body>
+    // t=2600ms: zoom is complete — clear styles and show invitation
     setTimeout(function () {
-      document.body.appendChild(card);
-      card.style.cssText = '';          // clear all inline animation styles
+      card.style.cssText = '';   // wipe all inline animation styles
       card.classList.remove('envelope-card', 'stage1', 'stage2', 'zooming');
 
       scene.classList.add('closed');
