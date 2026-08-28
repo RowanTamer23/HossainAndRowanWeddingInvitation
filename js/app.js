@@ -50,7 +50,7 @@
     }
   };
 
-  var currentLang = 'ar';
+  var currentLang = 'en';
 
   var idMap = {
     txtFamilyLine: 'familyLine', txtName1: 'name1', txtAmp: 'amp', txtName2: 'name2', txtTagline: 'tagline',
@@ -78,6 +78,12 @@
     document.body.classList.toggle('lang-en', lang === 'en');
     document.getElementById('btnLangEn').classList.toggle('active', lang === 'en');
     document.getElementById('btnLangAr').classList.toggle('active', lang === 'ar');
+
+    var pointerText = document.getElementById('langPointerText');
+    if (pointerText) {
+      pointerText.textContent = lang === 'en' ? 'عربي' : 'English';
+    }
+
     updateDate();
     updateCountdown();
 
@@ -355,6 +361,6 @@
     } catch (e) { }
   })();
 
-  applyLanguage('ar');
+  applyLanguage('en');
 
 })();

@@ -1,24 +1,33 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>حسين &amp; روان — دعوة زفاف</title>
-  <meta name="description" content="يتشرف حسين وروان بدعوتكم لمشاركتهما فرحة زفافهما. الإثنين، ١٢ أكتوبر ٢٠٢٦.">
+  <title>Hossain &amp; Rowan — Wedding Invitation</title>
+  <meta name="description" content="Hossain and Rowan joyfully invite you to share the celebration of their wedding. Monday, October 12, 2026.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css?v=150">
 </head>
-<body class="lang-ar">
+<body class="lang-en">
 
-<div class="lang-switch">
-  <button class="lang-btn" id="btnLangEn">EN</button>
-  <button class="lang-btn active" id="btnLangAr">AR</button>
+<div class="lang-switch-container">
+  <div class="lang-pointer" id="langPointer" role="status" aria-label="Switch language">
+    <span class="lang-pointer-text" id="langPointerText">عربي</span>
+    <svg class="lang-pointer-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+      <polyline points="12 5 19 12 12 19"></polyline>
+    </svg>
+  </div>
+  <div class="lang-switch">
+    <button class="lang-btn active" id="btnLangEn">EN</button>
+    <button class="lang-btn" id="btnLangAr">AR</button>
+  </div>
 </div>
 
 <!-- Scroll indicator arrow on the right -->
-<div id="scrollArrow" role="button" tabindex="0" aria-label="التمرير للأسفل">
+<div id="scrollArrow" role="button" tabindex="0" aria-label="Scroll down">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
     <polyline points="6 9 12 15 18 9"></polyline>
   </svg>
