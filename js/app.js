@@ -14,15 +14,16 @@
   var STR = {
     en: {
       inviteEyebrow: "You're Invited", tapHint: "Tap the seal to open", seal: "H&R",
+      coverEyebrow: "Wedding Invitation", coverMonogram: "H&R", coverDateNum: "12 · 10 · 2026", coverTagline: "Save Our Date",
       familyLine: "Together with their families", name1: "Hossain", amp: "&", name2: "Rowan",
       tagline: "joyfully invite you to share the celebration of their wedding — an evening of love, laughter, and new beginnings.",
       saveDateEyebrow: "Save the Date", dateSub: "Save the Date",
       timeLabel: "7:00 PM", timeSub: "Arrival & Ceremony",
-      findUs: "Find Us", venueName: "Sea Garden Open Air Hall",
+      findUs: "Find Us At", venueName: "Sea Garden Open Air Hall",
       venueNote: 'tap "Open in Google Maps" to check the location.',
       openMaps: "Open in Google Maps", copyLink: "Copy Location Link", copiedToast: "Location link copied!",
       kindlyRespond: "Kindly confirm your attendance", willYouJoin: "Will you be able to join us? 💍",
-      yourName: "Your Name", namePlaceholder: "e.g. Sarah Ahmed", yourResponse: "Your Response",
+      yourName: "Your Name", namePlaceholder: "e.g. Rowan", yourResponse: "Your Response",
       accept: "Joyfully Accepts", decline: "Regretfully Declines", sendRsvp: "Send RSVP",
       changeResponse: "Change your response",
       confirmYes: function (n) { return "Wonderful, " + n + "! We can't wait to celebrate with you — see you on October 12th!"; },
@@ -32,6 +33,7 @@
     },
     ar: {
       inviteEyebrow: "أنتم مدعوون", tapHint: "المسوا الختم لفتح الدعوة", seal: "ح & ر",
+      coverEyebrow: "دعوة زفاف", coverMonogram: "ح & ر", coverDateNum: "١٢ · ١٠ · ٢٠٢٦", coverTagline: "احفظوا التاريخ",
       familyLine: "بمشاركة أسرتيهما", name1: "حسين", amp: "و", name2: "روان",
       tagline: "يتشرفان بدعوتكم لمشاركتهما فرحة زفافهما — أمسية مليئة بالحب والسعادة وبداية جديدة.",
       saveDateEyebrow: "احفظوا التاريخ", dateSub: "احفظوا التاريخ",
@@ -40,7 +42,7 @@
       venueNote: 'اضغطوا على "فتح في خرائط جوجل" للوصول إلى المكان.',
       openMaps: "فتح في خرائط جوجل", copyLink: "نسخ رابط الموقع", copiedToast: "تم نسخ رابط الموقع بنجاح!",
       kindlyRespond: "تأكيد الحضور", willYouJoin: "يسعدنا حضوركم ومشاركتنا الفرحة 💍",
-      yourName: "الاسم الكريم", namePlaceholder: "مثال: سارة أحمد", yourResponse: "هل ستتمكن من الحضور؟",
+      yourName: "الاسم الكريم", namePlaceholder: "مثال: روان", yourResponse: "هل ستتمكن من الحضور؟",
       accept: "بكل سرور يشرفني الحضور 🌿", decline: "أعتذر لعدم التمكن من الحضور 🤍", sendRsvp: "إرسال الرد",
       changeResponse: "تعديل الرد",
       confirmYes: function (n) { return "أهلاً بك يا " + n + "! يسعدنا جداً حضورك ونتطلع للاحتفال معاً في ١٢ أكتوبر!"; },
@@ -53,6 +55,7 @@
   var currentLang = 'en';
 
   var idMap = {
+    coverEyebrow: 'coverEyebrow', coverMonogram: 'coverMonogram', coverDateNum: 'coverDateNum', coverTagline: 'coverTagline',
     txtFamilyLine: 'familyLine', txtName1: 'name1', txtAmp: 'amp', txtName2: 'name2', txtTagline: 'tagline',
     txtSaveDateEyebrow: 'saveDateEyebrow', txtDateSub: 'dateSub', txtTimeLabel: 'timeLabel', txtTimeSub: 'timeSub',
     txtFindUs: 'findUs', txtVenueName: 'venueName', txtVenueNote: 'venueNote',
@@ -352,6 +355,140 @@
     }
     showConfirmation(name, selected);
   });
+
+  /* ======================================================
+     AMBIENT BACKGROUND PARTICLES & PARALLAX
+  ====================================================== */
+  function initAmbientAtmosphere() {
+    var container = document.getElementById('bgParticles');
+    var glowWrap = document.getElementById('bgGlowWrap');
+    var foliageWrap = document.getElementById('bgFoliageWrap');
+    if (!container) return;
+
+    var isReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isReduced) return;
+
+    var particleTemplates = {
+      terracotta_petal: '<svg class="particle-petal" viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2 C 18 10, 24 18, 20 25 C 16 32, 8 32, 4 25 C 0 18, 6 10, 12 2 Z" fill="var(--terracotta)" opacity="0.7"/><path d="M12 5 C 16 11, 20 18, 17 23 C 14 27, 10 27, 7 23 C 4 18, 8 11, 12 5 Z" fill="var(--amber)" opacity="0.55"/></svg>',
+      blush_petal: '<svg class="particle-petal" viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2 C 18 10, 24 18, 20 25 C 16 32, 8 32, 4 25 C 0 18, 6 10, 12 2 Z" fill="var(--blush-deep)" opacity="0.65"/><path d="M12 5 C 16 11, 20 18, 17 23 C 14 27, 10 27, 7 23 C 4 18, 8 11, 12 5 Z" fill="var(--blush)" opacity="0.55"/></svg>',
+      leaf: '<svg class="particle-leaf" viewBox="0 0 20 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10 2 C 18 12, 18 22, 10 30 C 2 22, 2 12, 10 2 Z" fill="var(--forest)" opacity="0.65"/><path d="M10 2 L 10 30" stroke="var(--sage-light)" stroke-width="0.8" opacity="0.7"/></svg>',
+      sparkle: '<span class="particle-sparkle">✦</span>',
+      dust: '<svg style="width:8px;height:8px;opacity:0.6;" viewBox="0 0 10 10"><circle cx="5" cy="5" r="3.5" fill="var(--amber-light)"/></svg>'
+    };
+
+    var types = ['terracotta_petal', 'blush_petal', 'leaf', 'leaf', 'sparkle', 'sparkle', 'dust'];
+    var count = window.innerWidth < 768 ? 12 : 18;
+    var particles = [];
+
+    for (var i = 0; i < count; i++) {
+      var type = types[i % types.length];
+      var el = document.createElement('div');
+      el.className = 'particle';
+      el.innerHTML = particleTemplates[type];
+      container.appendChild(el);
+
+      particles.push({
+        el: el,
+        type: type,
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vy: type === 'sparkle' || type === 'dust' ? -(0.2 + Math.random() * 0.4) : (0.4 + Math.random() * 0.6),
+        vx: (Math.random() - 0.5) * 0.3,
+        rot: Math.random() * 360,
+        vRot: (Math.random() - 0.5) * 0.8,
+        swayAmp: 15 + Math.random() * 25,
+        swayFreq: 0.01 + Math.random() * 0.02,
+        swayPhase: Math.random() * Math.PI * 2,
+        scale: 0.6 + Math.random() * 0.55
+      });
+    }
+
+    var animId = null;
+    var lastTime = performance.now();
+
+    function updateParticles(now) {
+      var dt = Math.min((now - lastTime) / 16.667, 2.5);
+      lastTime = now;
+
+      var w = window.innerWidth;
+      var h = window.innerHeight;
+
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        p.y += p.vy * dt;
+        p.x += p.vx * dt;
+        p.swayPhase += p.swayFreq * dt;
+        p.rot += p.vRot * dt;
+
+        var swayOffset = Math.sin(p.swayPhase) * p.swayAmp;
+        var currentX = p.x + swayOffset;
+
+        // Reset if drifted beyond screen bounds
+        if (p.vy > 0 && p.y > h + 40) {
+          p.y = -30;
+          p.x = Math.random() * w;
+        } else if (p.vy < 0 && p.y < -30) {
+          p.y = h + 20;
+          p.x = Math.random() * w;
+        }
+        if (currentX < -40) p.x = w + 20;
+        if (currentX > w + 40) p.x = -20;
+
+        p.el.style.transform = 'translate3d(' + currentX.toFixed(1) + 'px,' + p.y.toFixed(1) + 'px,0) rotate(' + p.rot.toFixed(1) + 'deg) scale(' + p.scale + ')';
+      }
+
+      animId = requestAnimationFrame(updateParticles);
+    }
+
+    animId = requestAnimationFrame(updateParticles);
+
+    // Pause animation when tab is in background to save battery
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) {
+        if (animId) cancelAnimationFrame(animId);
+      } else {
+        lastTime = performance.now();
+        animId = requestAnimationFrame(updateParticles);
+      }
+    });
+
+    // Subtle gentle parallax response to mouse movement
+    var targetX = 0, targetY = 0;
+    var curGlowX = 0, curGlowY = 0;
+    var curFoliageX = 0, curFoliageY = 0;
+    var parallaxActive = false;
+
+    window.addEventListener('mousemove', function (e) {
+      targetX = (e.clientX / window.innerWidth - 0.5) * 24;
+      targetY = (e.clientY / window.innerHeight - 0.5) * 24;
+      if (!parallaxActive) {
+        parallaxActive = true;
+        renderParallax();
+      }
+    }, { passive: true });
+
+    function renderParallax() {
+      curGlowX += (targetX * 0.7 - curGlowX) * 0.05;
+      curGlowY += (targetY * 0.7 - curGlowY) * 0.05;
+      curFoliageX += (targetX * 0.4 - curFoliageX) * 0.05;
+      curFoliageY += (targetY * 0.4 - curFoliageY) * 0.05;
+
+      if (glowWrap) {
+        glowWrap.style.transform = 'translate3d(' + curGlowX.toFixed(2) + 'px,' + curGlowY.toFixed(2) + 'px,0)';
+      }
+      if (foliageWrap) {
+        foliageWrap.style.transform = 'translate3d(' + curFoliageX.toFixed(2) + 'px,' + curFoliageY.toFixed(2) + 'px,0)';
+      }
+
+      if (Math.abs(targetX * 0.7 - curGlowX) > 0.05 || Math.abs(targetY * 0.7 - curGlowY) > 0.05) {
+        requestAnimationFrame(renderParallax);
+      } else {
+        parallaxActive = false;
+      }
+    }
+  }
+
+  initAmbientAtmosphere();
 
   // Restore previous response on this device
   (function restore() {

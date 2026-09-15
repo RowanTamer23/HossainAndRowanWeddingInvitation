@@ -10,8 +10,12 @@
   --moss: #485E3B;         /* Deep moss green */
   --gold: #C5A059;         /* Warm metallic gold/champagne */
   --gold-light: #EAD09D;   /* Soft glowing gold */
+  --terracotta: #C85A32;   /* Warm rich burnt orange / terracotta from reference */
+  --terracotta-deep: #A84524; /* Deep rust terracotta */
+  --amber: #DDA74F;        /* Warm ochre / amber gold */
+  --amber-light: #F2C975;  /* Soft glowing amber */
   --blush: #F4E3DD;        /* Softer silk blush */
-  --blush-deep: #E0B4A4;   /* Richer terracotta/rose gold blush */
+  --blush-deep: #e27248;   /* Richer terracotta/rose gold blush */
   --ink: #2B3328;
   --paper-shadow: 0 30px 60px -20px rgba(43,51,40,0.35);
 
@@ -180,36 +184,303 @@ body {
   box-shadow: 0 2px 6px rgba(43,51,40,0.2);
 }
 
-/* ============ AMBIENT PAPER TEXTURE + FLOATING LEAVES ============ */
-.paper-texture {
+/* ============ BOHEMIAN AURA & ABSTRACT WATERCOLOR BACKGROUND ============ */
+.bg-atmosphere {
   position: fixed;
   inset: 0;
-  pointer-events: none;
   z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
   background:
-    radial-gradient(circle at 15% 15%, rgba(143,163,126,0.10), transparent 40%),
-    radial-gradient(circle at 90% 10%, rgba(217,169,160,0.14), transparent 40%),
-    radial-gradient(circle at 85% 85%, rgba(185,139,78,0.08), transparent 45%);
+    radial-gradient(ellipse 75% 60% at 5% 8%, rgba(200, 90, 50, 0.42) 0%, rgba(200, 90, 50, 0.12) 50%, transparent 75%),
+    radial-gradient(ellipse 70% 55% at 95% 10%, rgba(30, 53, 26, 0.40) 0%, rgba(72, 94, 59, 0.12) 50%, transparent 75%),
+    radial-gradient(ellipse 80% 65% at 92% 90%, rgba(200, 90, 50, 0.45) 0%, rgba(221, 167, 79, 0.20) 50%, transparent 80%),
+    radial-gradient(ellipse 70% 55% at 8% 92%, rgba(30, 53, 26, 0.42) 0%, rgba(122, 144, 104, 0.15) 50%, transparent 75%),
+    radial-gradient(ellipse 65% 55% at 50% 32%, rgba(221, 167, 79, 0.28) 0%, transparent 65%),
+    radial-gradient(circle at 50% 50%, var(--ivory) 0%, var(--ivory-deep) 100%);
+  contain: strict;
 }
 
-.drift-leaf {
-  position: fixed;
-  z-index: 0;
-  opacity: 0.35;
+/* Vintage Film & Hot-Press Paper Grain Overlay (matching Images 1 & 2) */
+.bg-paper-texture {
+  position: absolute;
+  inset: 0;
+  opacity: 0.13;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 180px 180px;
+  z-index: 2;
+}
+
+/* Warm Parchment Vignette */
+.bg-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(168, 69, 36, 0.06) 75%, rgba(18, 33, 16, 0.12) 100%);
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+
+/* Ambient Morphing Aura Glow Mesh */
+.bg-glow-wrap {
+  position: absolute;
+  inset: -15%;
+  width: 130%;
+  height: 130%;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+.bg-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(75px);
+  opacity: 0.72;
   pointer-events: none;
-  animation: drift 24s linear infinite;
 }
 
-.drift-leaf svg {
+/* Terracotta / Rust top-left aura blob */
+.bg-glow-1 {
+  width: 540px;
+  height: 540px;
+  top: 0%;
+  left: -8%;
+  background: radial-gradient(circle, rgba(200, 90, 50, 0.55) 0%, rgba(200, 90, 50, 0.15) 50%, transparent 70%);
+  animation: auraMorph1 18s ease-in-out infinite alternate;
+}
+
+/* Forest / Moss green top-right aura blob */
+.bg-glow-2 {
+  width: 580px;
+  height: 580px;
+  top: 10%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(30, 53, 26, 0.50) 0%, rgba(72, 94, 59, 0.20) 50%, transparent 70%);
+  animation: auraMorph2 22s ease-in-out infinite alternate;
+}
+
+/* Burnt orange / Amber bottom-right aura blob */
+.bg-glow-3 {
+  width: 560px;
+  height: 560px;
+  bottom: -5%;
+  right: -5%;
+  background: radial-gradient(circle, rgba(200, 90, 50, 0.52) 0%, rgba(221, 167, 79, 0.25) 50%, transparent 70%);
+  animation: auraMorph3 20s ease-in-out infinite alternate;
+}
+
+/* Emerald / Sage bottom-left aura blob */
+.bg-glow-4 {
+  width: 520px;
+  height: 520px;
+  bottom: 0%;
+  left: -5%;
+  background: radial-gradient(circle, rgba(30, 53, 26, 0.48) 0%, rgba(122, 144, 104, 0.22) 50%, transparent 70%);
+  animation: auraMorph1 24s ease-in-out infinite alternate-reverse;
+}
+
+/* Warm ochre gold center aura blob */
+.bg-glow-5 {
+  width: 440px;
+  height: 440px;
+  top: 40%;
+  left: 30%;
+  background: radial-gradient(circle, rgba(221, 167, 79, 0.35) 0%, rgba(221, 167, 79, 0) 70%);
+  animation: auraMorph2 16s ease-in-out infinite alternate;
+}
+
+@keyframes auraMorph1 {
+  0%   { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0.65; }
+  50%  { transform: translate(45px, -35px) scale(1.18) rotate(15deg); opacity: 0.85; }
+  100% { transform: translate(-30px, 30px) scale(0.92) rotate(-10deg); opacity: 0.70; }
+}
+
+@keyframes auraMorph2 {
+  0%   { transform: translate(0, 0) scale(0.95) rotate(0deg); opacity: 0.70; }
+  50%  { transform: translate(-45px, 35px) scale(1.15) rotate(-15deg); opacity: 0.88; }
+  100% { transform: translate(35px, -40px) scale(1.05) rotate(10deg); opacity: 0.65; }
+}
+
+@keyframes auraMorph3 {
+  0%   { transform: translate(0, 0) scale(1.05) rotate(0deg); opacity: 0.75; }
+  50%  { transform: translate(35px, 40px) scale(0.90) rotate(12deg); opacity: 0.60; }
+  100% { transform: translate(-40px, -30px) scale(1.20) rotate(-8deg); opacity: 0.90; }
+}
+
+/* Bohemian Abstract Art Wrap (matching Images 3 & 4) */
+.bg-art-wrap {
+  position: absolute;
+  inset: 0;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+  z-index: 1;
+}
+
+.bg-art-cluster {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.75;
+  transition: opacity 0.5s ease;
+}
+
+.bg-art-cluster svg {
+  display: block;
   width: 100%;
   height: 100%;
+  filter: drop-shadow(0 6px 16px rgba(43, 51, 40, 0.08));
 }
 
-@keyframes drift {
-  0% { transform: translateY(-10vh) translateX(0) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.35; }
-  90% { opacity: 0.35; }
-  100% { transform: translateY(110vh) translateX(30px) rotate(200deg); opacity: 0; }
+.bg-art-tl {
+  top: 0;
+  left: 0;
+  width: clamp(200px, 34vw, 420px);
+  height: clamp(200px, 34vw, 420px);
+  transform-origin: top left;
+  animation: artSwayTL 16s ease-in-out infinite alternate;
+}
+
+.bg-art-tr {
+  top: 0;
+  right: 0;
+  width: clamp(200px, 34vw, 420px);
+  height: clamp(200px, 34vw, 420px);
+  transform-origin: top right;
+  animation: artSwayTR 18s ease-in-out infinite alternate;
+}
+
+.bg-art-bl {
+  bottom: 0;
+  left: 0;
+  width: clamp(190px, 32vw, 400px);
+  height: clamp(190px, 32vw, 400px);
+  transform-origin: bottom left;
+  animation: artSwayBL 19s ease-in-out infinite alternate;
+}
+
+.bg-art-br {
+  bottom: 0;
+  right: 0;
+  width: clamp(190px, 32vw, 400px);
+  height: clamp(190px, 32vw, 400px);
+  transform-origin: bottom right;
+  animation: artSwayBR 17s ease-in-out infinite alternate;
+}
+
+/* Side margin flowing waves */
+.bg-side-wave {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(70px, 12vw, 150px);
+  height: clamp(350px, 50vh, 580px);
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+.bg-side-wave-l {
+  left: 0;
+  transform-origin: left center;
+  animation: branchSwayLeft 15s ease-in-out infinite alternate;
+}
+
+.bg-side-wave-r {
+  right: 0;
+  transform-origin: right center;
+  animation: branchSwayRight 17s ease-in-out infinite alternate;
+}
+
+@keyframes artSwayTL {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(1.5deg) scale(1.02); }
+  100% { transform: rotate(-1deg) scale(0.99); }
+}
+
+@keyframes artSwayTR {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(-1.5deg) scale(1.02); }
+  100% { transform: rotate(1deg) scale(0.99); }
+}
+
+@keyframes artSwayBL {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(-1.5deg) scale(1.02); }
+  100% { transform: rotate(1deg) scale(0.99); }
+}
+
+@keyframes artSwayBR {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(1.5deg) scale(1.02); }
+  100% { transform: rotate(-1deg) scale(0.99); }
+}
+
+@keyframes branchSwayLeft {
+  0%   { transform: translateY(-50%) rotate(0deg) scale(1); }
+  50%  { transform: translateY(-48%) rotate(1.5deg) scale(1.02); }
+  100% { transform: translateY(-52%) rotate(-1deg) scale(0.99); }
+}
+
+@keyframes branchSwayRight {
+  0%   { transform: translateY(-50%) rotate(0deg) scale(1); }
+  50%  { transform: translateY(-52%) rotate(-1.5deg) scale(1.02); }
+  100% { transform: translateY(-48%) rotate(1deg) scale(0.99); }
+}
+
+/* Ambient Floating Particles Layer */
+.bg-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 3;
+}
+
+.particle {
+  position: absolute;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.particle-petal {
+  width: 15px;
+  height: 19px;
+  opacity: 0.65;
+  filter: drop-shadow(0 2px 5px rgba(200, 90, 50, 0.3));
+}
+
+.particle-leaf {
+  width: 16px;
+  height: 22px;
+  opacity: 0.60;
+  filter: drop-shadow(0 2px 4px rgba(30, 53, 26, 0.25));
+}
+
+.particle-sparkle {
+  width: 13px;
+  height: 13px;
+  color: var(--gold);
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+  opacity: 0.75;
+  filter: drop-shadow(0 0 6px rgba(221, 167, 79, 0.7));
+  animation: sparklePulse 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes sparklePulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.8); }
+  50%      { opacity: 0.95; transform: scale(1.25); }
+}
+
+@media (max-width: 768px) {
+  .bg-art-tl, .bg-art-tr, .bg-art-bl, .bg-art-br {
+    opacity: 0.60;
+    width: clamp(140px, 30vw, 240px);
+    height: clamp(140px, 30vw, 240px);
+  }
+  .bg-side-wave {
+    display: none;
+  }
 }
 
 /* ============ ENVELOPE SCENE ============ */
@@ -221,14 +492,127 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle, var(--ivory) 40%, var(--ivory-deep) 100%);
-  transition: opacity 0.2s ease, visibility 0.2s ease;
+  background: radial-gradient(circle at 50% 50%, rgba(253, 251, 247, 0.55) 25%, rgba(245, 239, 235, 0.85) 100%);
+  transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
 #envelope-scene.closed {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
+}
+
+/* Envelope Scene Accents & Botanicals (Non-circular) */
+.envelope-accents {
+  position: absolute;
+  inset: -24px;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+#envelope-scene.opening .envelope-accents,
+#envelope-scene.closed .envelope-accents {
+  opacity: 0;
+  transform: scale(1.05);
+}
+
+.env-glow-backdrop {
+  position: absolute;
+  inset: 12px;
+  border-radius: 16px;
+  background: radial-gradient(ellipse at center, rgba(197, 160, 89, 0.28) 0%, rgba(224, 180, 164, 0.16) 50%, transparent 75%);
+  filter: blur(24px);
+  animation: envGlowBreathe 5s ease-in-out infinite alternate;
+}
+
+@keyframes envGlowBreathe {
+  0%   { opacity: 0.5; transform: scale(0.96); }
+  100% { opacity: 0.85; transform: scale(1.04); }
+}
+
+
+
+/* Envelope Stardust Sparkles */
+.env-sparkle {
+  position: absolute;
+  color: var(--gold);
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 6px rgba(197, 160, 89, 0.8));
+  animation: sparkleTwinkle 3s ease-in-out infinite;
+}
+
+.es-1 { top: -20px; left: 18%; animation-delay: 0.2s; }
+.es-2 { top: -20px; right: 18%; animation-delay: 1.2s; }
+.es-3 { bottom: -18px; left: 22%; animation-delay: 1.9s; }
+.es-4 { bottom: -18px; right: 22%; animation-delay: 0.7s; }
+.es-5 { top: 46%; left: -22px; animation-delay: 1.5s; font-size: 11px; }
+.es-6 { top: 46%; right: -22px; animation-delay: 2.3s; font-size: 11px; }
+
+@keyframes sparkleTwinkle {
+  0%, 100% { opacity: 0.25; transform: scale(0.75) rotate(0deg); }
+  50%      { opacity: 1;    transform: scale(1.3) rotate(45deg); }
+}
+
+/* ============ BOTANICAL ANIMATIONS (SHARED FOR ENVELOPE & PAPER) ============ */
+@keyframes botanicalSwayTL {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(2.4deg) scale(1.03); }
+  100% { transform: rotate(-1.2deg) scale(0.98); }
+}
+
+@keyframes botanicalSwayTR {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(-2.4deg) scale(1.03); }
+  100% { transform: rotate(1.2deg) scale(0.98); }
+}
+
+@keyframes botanicalSwayBL {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(-2.2deg) scale(1.03); }
+  100% { transform: rotate(1.4deg) scale(0.98); }
+}
+
+@keyframes botanicalSwayBR {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(2.2deg) scale(1.03); }
+  100% { transform: rotate(-1.4deg) scale(0.98); }
+}
+
+@keyframes garlandBreatheTop {
+  0%   { transform: translateX(-50%) translateY(0) scale(1); }
+  50%  { transform: translateX(-50%) translateY(-2.5px) scale(1.02); }
+  100% { transform: translateX(-50%) translateY(1.5px) scale(0.99); }
+}
+
+@keyframes garlandBreatheBottom {
+  0%   { transform: translateX(-50%) translateY(0) scale(1); }
+  50%  { transform: translateX(-50%) translateY(2.5px) scale(1.02); }
+  100% { transform: translateX(-50%) translateY(-1.5px) scale(0.99); }
+}
+
+@keyframes sparkleGlint {
+  0%   { opacity: 0.6; transform: scale(0.85); }
+  50%  { opacity: 1;   transform: scale(1.35); filter: drop-shadow(0 0 5px rgba(197, 160, 89, 0.9)); }
+  100% { opacity: 0.7; transform: scale(0.95); }
+}
+
+@media (max-width: 768px) {
+  .bg-branch-left,
+  .bg-branch-right {
+    opacity: 0.35;
+    width: clamp(65px, 13vw, 110px);
+  }
+  .bg-corner-tl,
+  .bg-corner-tr,
+  .bg-corner-bl,
+  .bg-corner-br {
+    opacity: 0.38;
+    width: clamp(75px, 15vw, 130px);
+    height: clamp(75px, 15vw, 130px);
+  }
 }
 
 .monogram-top {
@@ -371,15 +755,15 @@ body {
 .card-body {
   position: absolute;
   inset: 0;
-  background: #ffffff;
-  border: 1.5px solid var(--gold-light);
+  background: var(--ivory);
+  border: 1.5px solid var(--gold);
   border-radius: inherit;
-  box-shadow: 0 12px 40px rgba(43,51,40,0.28), 0 2px 8px rgba(43,51,40,0.12);
+  box-shadow: 0 16px 45px rgba(43,51,40,0.32), 0 2px 10px rgba(43,51,40,0.15);
   overflow: hidden;
   width: 100%; height: 100%;
 }
 
-/* ── COVER: H&R + 12 · 10 · 2026 matching photo exactly ──── */
+/* ── COVER: Bohemian Aura, Film Grain, Monogram & Watercolor Art ──── */
 .card-cover {
   position: absolute;
   inset: 0;
@@ -387,11 +771,11 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding-top: clamp(35px, 12vw, 55px);
-  gap: 0.75rem;
-  background: #ffffff;
+  padding: clamp(28px, 8.5vw, 35px) clamp(16px, 4vw, 28px) clamp(16px, 4vw, 28px);
+  background: var(--ivory);
   z-index: 2;
-  transition: opacity 0.4s ease;
+  overflow: hidden;
+  transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .envelope-card.fade-to-content .card-cover {
@@ -399,25 +783,202 @@ body {
   pointer-events: none;
 }
 
+/* Cover Bohemian Aura Background */
+.cover-aura-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 70% at 0% 0%, rgba(200, 90, 50, 0.42) 0%, rgba(200, 90, 50, 0.12) 50%, transparent 75%),
+    radial-gradient(ellipse 85% 65% at 100% 0%, rgba(30, 53, 26, 0.40) 0%, rgba(72, 94, 59, 0.12) 50%, transparent 75%),
+    radial-gradient(ellipse 90% 70% at 100% 100%, rgba(200, 90, 50, 0.45) 0%, rgba(221, 167, 79, 0.22) 50%, transparent 80%),
+    radial-gradient(ellipse 85% 65% at 0% 100%, rgba(30, 53, 26, 0.40) 0%, rgba(122, 144, 104, 0.15) 50%, transparent 75%),
+    radial-gradient(circle at 50% 50%, rgba(253, 251, 247, 0.95) 0%, rgba(248, 243, 234, 0.98) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Cover Vintage Film / Paper Grain */
+.cover-paper-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 160px 160px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Elegant Inner Gold Inlay Border */
+.cover-inner-border {
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(197, 160, 89, 0.45);
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Corner Abstract Bohemian Watercolor & Botanical Clusters */
+.cover-art-corner {
+  position: absolute;
+  width: clamp(65px, 20vw, 110px);
+  height: clamp(65px, 20vw, 110px);
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 3px 8px rgba(43, 51, 40, 0.10));
+}
+
+.cover-art-corner svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.cover-art-corner.tl {
+  top: 0;
+  left: 0;
+  transform-origin: top left;
+  animation: coverSwayTL 10s ease-in-out infinite alternate;
+}
+
+.cover-art-corner.tr {
+  top: 0;
+  right: 0;
+  transform-origin: top right;
+  animation: coverSwayTR 11s ease-in-out infinite alternate;
+}
+
+.cover-art-corner.bl {
+  bottom: 0;
+  left: 0;
+  transform-origin: bottom left;
+  animation: coverSwayBL 12s ease-in-out infinite alternate;
+}
+
+.cover-art-corner.br {
+  bottom: 0;
+  right: 0;
+  transform-origin: bottom right;
+  animation: coverSwayBR 11.5s ease-in-out infinite alternate;
+}
+
+@keyframes coverSwayTL {
+  0%   { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(1.8deg) scale(1.03); }
+}
+@keyframes coverSwayTR {
+  0%   { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(-1.8deg) scale(1.03); }
+}
+@keyframes coverSwayBL {
+  0%   { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(-1.5deg) scale(1.02); }
+}
+@keyframes coverSwayBR {
+  0%   { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(1.5deg) scale(1.02); }
+}
+
+/* Center Content & Typography */
+.cover-center-content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.5rem;
+  margin-top: 0;
+}
+
+/* .cover-eyebrow {
+  font-family: var(--font-body);
+  font-size: clamp(0.62rem, 1.8vw, 0.75rem);
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--terracotta);
+  opacity: 0.92;
+  margin-bottom: 0.1rem;
+} */
+
+/* body.lang-ar .cover-eyebrow {
+  font-family: 'Cairo', sans-serif;
+  letter-spacing: 0.5px;
+} */
+
 .cover-monogram {
   font-family: 'Playfair Display', Georgia, serif !important;
-  font-size: clamp(2rem, 7vw, 3rem);
+  font-size: clamp(2rem, 5vw, 3.4rem);
   font-weight: 600;
-  letter-spacing: 2px;
-  color: var(--forest);
-  line-height: 0.8;
+  letter-spacing: 3px;
+  color: var(--forest-deep);
+  line-height: 0.9;
   direction: ltr !important;
   margin: 0;
+  text-shadow: 0 2px 10px rgba(30, 53, 26, 0.12);
+}
+
+body.lang-ar .cover-monogram {
+  font-family: 'Amiri', 'Playfair Display', serif !important;
+  font-size: clamp(2.2rem, 7.5vw, 3.2rem);
+  letter-spacing: 1px;
+}
+
+.cover-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 130px;
+  margin: 0.1rem 0;
+}
+
+.cover-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.cover-star {
+  font-size: 0.75rem;
+  color: var(--gold);
+  line-height: 1;
 }
 
 .cover-date-num {
   font-family: var(--font-body);
-  font-size: clamp(0.8rem, 2.5vw, 0.95rem);
-  font-weight: 400;
+  font-size: clamp(0.78rem, 2.4vw, 0.92rem);
+  font-weight: 500;
   letter-spacing: 4px;
-  color: var(--moss);
+  color: var(--forest);
   direction: ltr !important;
   margin: 0;
+}
+
+body.lang-ar .cover-date-num {
+  font-family: 'Cairo', var(--font-body);
+  letter-spacing: 2px;
+}
+
+.cover-tagline {
+  font-family: var(--font-body);
+  font-size: clamp(0.6rem, 1.6vw, 0.7rem);
+  font-weight: 500;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--moss);
+  opacity: 0.88;
+}
+
+body.lang-ar .cover-tagline {
+  font-family: 'Cairo', sans-serif;
+  letter-spacing: 0.5px;
 }
 
 /* ── FULL CONTENT: hidden during envelope & initial zoom, revealed when open ── */
@@ -636,20 +1197,50 @@ main {
   border: 1.5px solid var(--gold-light);
 }
 
-/* ============ BOTANICAL DECORATIONS ============ */
+/* ============ BOTANICAL DECORATIONS (PAPER) ============ */
 .floral-corner {
   position: absolute;
   width: clamp(60px, 16vw, 130px);
   height: clamp(60px, 16vw, 130px);
   pointer-events: none;
   z-index: 0;
-  opacity: 0.85;
+  opacity: 0.88;
 }
 
-.floral-corner.tl { top: 12px; left: 12px; }
-.floral-corner.tr { top: 12px; right: 12px; }
-.floral-corner.bl { bottom: 12px; left: 12px; }
-.floral-corner.br { bottom: 12px; right: 12px; }
+.floral-corner svg,
+.floral-edge svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.floral-corner.tl {
+  top: 12px;
+  left: 12px;
+  transform-origin: top left;
+  animation: botanicalSwayTL 7.5s ease-in-out infinite alternate;
+}
+
+.floral-corner.tr {
+  top: 12px;
+  right: 12px;
+  transform-origin: top right;
+  animation: botanicalSwayTR 8s ease-in-out infinite alternate;
+}
+
+.floral-corner.bl {
+  bottom: 12px;
+  left: 12px;
+  transform-origin: bottom left;
+  animation: botanicalSwayBL 8.5s ease-in-out infinite alternate;
+}
+
+.floral-corner.br {
+  bottom: 12px;
+  right: 12px;
+  transform-origin: bottom right;
+  animation: botanicalSwayBR 7.8s ease-in-out infinite alternate;
+}
 
 .floral-side {
   position: absolute;
@@ -677,11 +1268,41 @@ main {
   transform: translateX(-50%);
   pointer-events: none;
   z-index: 0;
-  opacity: 0.9;
+  opacity: 0.92;
 }
 
-.floral-edge.tc { top: 12px; }
-.floral-edge.bc { bottom: 12px; }
+.floral-edge.tc {
+  top: 12px;
+  transform-origin: top center;
+  animation: garlandBreatheTop 7s ease-in-out infinite alternate;
+}
+
+.floral-edge.bc {
+  bottom: 12px;
+  transform-origin: bottom center;
+  animation: garlandBreatheBottom 7.2s ease-in-out infinite alternate;
+}
+
+/* Micro-glint on gold accent berries across both paper florals and envelope */
+.floral-corner circle,
+.floral-edge circle,
+.env-corner circle,
+.vine .accent {
+  transform-origin: center;
+  animation: sparkleGlint 3.6s ease-in-out infinite alternate;
+}
+
+.floral-corner circle:nth-of-type(odd),
+.env-corner circle:nth-of-type(odd) {
+  animation-delay: 0.8s;
+  animation-duration: 4.2s;
+}
+
+.floral-corner circle:nth-of-type(even),
+.env-corner circle:nth-of-type(even) {
+  animation-delay: 1.8s;
+  animation-duration: 3.2s;
+}
 
 main section {
   padding: 9vh 0;
