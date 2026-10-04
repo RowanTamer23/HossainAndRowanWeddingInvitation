@@ -18,7 +18,7 @@
       familyLine: "Together with their families", name1: "Hossain", amp: "&", name2: "Rowan",
       tagline: "joyfully invite you to share the celebration of their wedding — an evening of love, laughter, and new beginnings.",
       saveDateEyebrow: "Save the Date", dateSub: "Save the Date",
-      timeLabel: "7:00 PM", timeSub: "Arrival & Ceremony",
+      timeLabel: "6:00 PM", timeSub: "Arrival & Ceremony",
       findUs: "Find Us At", venueName: "Sea Garden Open Air Hall",
       venueNote: 'tap "Open in Google Maps" to check the location.',
       openMaps: "Open in Google Maps", copyLink: "Copy Location Link", copiedToast: "Location link copied!",
